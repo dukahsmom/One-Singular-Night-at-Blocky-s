@@ -47,7 +47,7 @@ let phone7;
 
 // Menu Variables
 let staticLineX = 300;
-let staticLineY = 200;
+let staticLineY = 175;
 let gameBegan = false;
 let fadeInEffectWaitTime = 0;
 let fadeInEffectTransparency = 255;
@@ -63,6 +63,12 @@ let phoneGuyDialogueBoxY = 200;
 let phoneGuyDialogueStage = 0;
 let phoneGuyTextInterval = 0;
 let phoneGuySoundPlayed = 0;
+
+// Camera Variables
+let tabletX = 300;
+let tabletY = 600;
+let tabletOpened = false;
+let tabletAvailable = true
 
 // Left Door Variables
 let leftDoorY = 10;
@@ -113,8 +119,8 @@ function setup() {
 function draw() {
     background(0);
 
-    drawMainMenu();
-    // gameStarted();
+    // drawMainMenu();
+    gameStarted();
 
     mouseDebug();
 
@@ -383,6 +389,8 @@ function drawOfficeDeskDecoration() {
     point(240, 212.5);
     point(242.5, 213.5);
     point(242.5, 210.5);
+    strokeWeight(1);
+    line(235, 210, 235, 217.5);
 
 
     // Phone
@@ -412,20 +420,20 @@ function drawOfficeFrame() {
 
     push();
     translate(505, 0)
-    rotate(radians(-10));
-    rect(0, 0, 90, 240);
+    rotate(radians(-15));
+    rect(0, 0, 110, 240);
     pop();
 
     push();
     translate(80, 400);
-    rotate(radians(-10));
-    rect(0, 0, 80, 40);
+    rotate(radians(-15));
+    rect(0, 0, 90, 40);
     pop();
 
     push();
     translate(90, 0)
-    rotate(radians(10));
-    rect(0, 0, 100, 240);
+    rotate(radians(15));
+    rect(0, 0, 120, 240);
     pop();
 
     rect(300, 200, 210, 150);
@@ -436,27 +444,27 @@ function drawOfficeFrame() {
     rect(300, 325, 210, 150);
 
     push();
-    translate(165, 125);
-    rotate(radians(10));
+    translate(165, 135);
+    rotate(radians(15));
     rect(0, -90, 100, 200);
     pop();
 
     push();
     translate(165, 280);
-    rotate(radians(-10));
+    rotate(radians(-15));
     rect(0, 0, 80, 50);
     pop();
 
     push();
-    translate(430, 125);
-    rotate(radians(-10));
-    rect(10, -90, 100, 200);
+    translate(430, 135);
+    rotate(radians(-15));
+    rect(10, -90, 90, 200);
     pop();
 
     push();
     translate(435, 300);
-    rotate(radians(10));
-    rect(0, 0, 80, 100);
+    rotate(radians(15));
+    rect(0, 0, 77.5, 100);
     pop();
     rect(160, 350, 80, 150);
     rect(440, 350, 80, 150);
@@ -525,6 +533,7 @@ function drawRightDoorButtons() {
 
 function drawCameraButton() {
     fill(150, 170);
+    noStroke();
     rect(300, 380, 350, 30);
     strokeWeight(4);
     stroke('white');
@@ -545,12 +554,15 @@ function gameStarted() {
     drawOfficeDesk();
     drawLeftDoorButtons();
     drawRightDoorButtons();
-    drawCameraButton();
     if (!OfficeAmbience.isPlaying()) {
         OfficeAmbience.loop();
     }
     phoneGuyLogic();
     drawPhoneGuyDialogueUI();
+    drawCameraMonitor();
+    drawCameraScreen();
+    drawCameraButton();
+    print(tabletY);
 }
 
 function mouseDebug() {
@@ -571,6 +583,67 @@ function mouseDebug() {
         text('Y:', mouseX - 40, mouseY + 20)
         text(mouseY, mouseX - 25, mouseY + 20)
     }
+
+    if (mouseY > 375) {
+        stroke('black');
+        fill('white');
+        text('Y:', mouseX - 40, mouseY)
+        text(mouseY, mouseX - 25, mouseY)
+    }
+}
+
+function drawCameraMonitor() {
+    strokeWeight(1);
+    stroke(0);
+    fill(120, 255);
+    rect(300, tabletY, 500, 300);
+
+    strokeWeight(2);
+    line(50, tabletY - 95, 550, tabletY - 95);
+
+    fill(255);
+    textSize(30);
+    text("Rectangular Monitor v1.2", 140, tabletY - 110);
+
+    fill(110);
+    rect(300, tabletY + 185, 500, 75);
+    ellipse(500, tabletY + 185, 60, 60);
+
+    stroke(255);
+    strokeWeight(3);
+    line(500, tabletY + 185, 500, tabletY + 156);
+
+    strokeWeight(1);
+    stroke('black');
+    fill('red');
+    rect(100, tabletY + 185, 40, 40, 10); // 4th Argument is used to curve the rectangle
+
+    fill('white');
+    rect(170, tabletY + 185, 40, 40, 10); // 4th Argument is used to curve the rectangle
+
+
+    if (tabletOpened == true && tabletY > 170) {
+        tabletY -= 25;
+        tabletAvailable = false;
+    }
+
+    if (tabletOpened == true && tabletY == 170) {
+        tabletAvailable = true;
+    }
+
+    if (tabletOpened == false && tabletY < 600) {
+        tabletY += 25;
+        tabletAvailable = false;
+    }
+
+    if (tabletOpened == false && tabletY == 600) {
+        tabletAvailable = true;
+    }
+}
+
+function drawCameraScreen() {
+    fill('black');
+    rect(300, tabletY + 26, 495, 235);
 }
 
 function mouseClicked() {
@@ -663,6 +736,19 @@ function mouseClicked() {
         phone6.stop();
         phone7.stop();
     }
+
+    // Camera Button Detection
+
+    if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == false && tabletAvailable == true) {
+        tabletOpened = true;
+        print(tabletOpened);
+    }
+
+    else if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == true && tabletAvailable == true) {
+        tabletOpened = false;
+        print(tabletOpened);
+    }
+
 
 
 }
