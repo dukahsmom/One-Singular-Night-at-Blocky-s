@@ -37,6 +37,13 @@ let OfficeAmbience;
 let MenuTheme;
 let phoneGuyRingSound;
 let phoneGuyPickupSound;
+let phone1;
+let phone2;
+let phone3;
+let phone4;
+let phone5;
+let phone6;
+let phone7;
 
 // Menu Variables
 let staticLineX = 300;
@@ -53,14 +60,18 @@ let phoneGuyPickedUpOn = false;
 let phoneGuyHungUpOn = false;
 let phoneGuyDialogueBoxX = 300;
 let phoneGuyDialogueBoxY = 200;
+let phoneGuyDialogueStage = 0;
+let phoneGuyTextInterval = 0;
+let phoneGuySoundPlayed = 0;
 
 // Left Door Variables
-let leftDoorY = -50;
+let leftDoorY = 10;
 let leftDoorButtonAvailable = true;
 let leftDoorClosed = false;
 
 // Right Door Variables
-let rightDoorY = -50;
+let rightDoorY = 10;
+let rightDoorButtonAvailable = true;
 let rightDoorClosed = false;
 
 // Left Light Button Variables
@@ -80,6 +91,13 @@ function preload() {
     MenuTheme = loadSound("mp3/MenuTheme.mp3");
     phoneGuyRingSound = loadSound("mp3/Phone Ringing.mp3");
     phoneGuyPickupSound = loadSound("mp3/Phone Pickup Sound.mp3")
+    phone1 = loadSound("mp3/Phone1.mp3");
+    phone2 = loadSound("mp3/Phone2.mp3");
+    phone3 = loadSound("mp3/Phone3.mp3");
+    phone4 = loadSound("mp3/Phone4.mp3");
+    phone5 = loadSound("mp3/Phone5.mp3");
+    phone6 = loadSound("mp3/Phone6.mp3");
+    phone7 = loadSound("mp3/Phone7.mp3");
 }
 
 
@@ -97,7 +115,6 @@ function draw() {
 
     drawMainMenu();
     // gameStarted();
-
 
     mouseDebug();
 
@@ -386,13 +403,63 @@ function drawOfficeFrame() {
     fill(200);
     rect(0, 400, 90, 800);
     rect(600, 400, 90, 600);
-    rect(300, 400, 600, 40);
-    rect(300, 0, 600, 240);
-    rect(300, 200, 210, 500);
-    rect(480, 200, 10, 370);
-    rect(120, 200, 10, 370);
-    rect(300, 325, 350, 150);
-    rect(300, 125, 350, 10);
+
+    push();
+    translate(520, 400);
+    rotate(radians(10));
+    rect(0, 0, 80, 40);
+    pop();
+
+    push();
+    translate(505, 0)
+    rotate(radians(-10));
+    rect(0, 0, 90, 240);
+    pop();
+
+    push();
+    translate(80, 400);
+    rotate(radians(-10));
+    rect(0, 0, 80, 40);
+    pop();
+
+    push();
+    translate(90, 0)
+    rotate(radians(10));
+    rect(0, 0, 100, 240);
+    pop();
+
+    rect(300, 200, 210, 150);
+    rect(300, 0, 200, 250);
+    rect(550, -20, 150, 250);
+    rect(480, 200, 10, 500);
+    rect(120, 200, 10, 500);
+    rect(300, 325, 210, 150);
+
+    push();
+    translate(165, 125);
+    rotate(radians(10));
+    rect(0, -90, 100, 200);
+    pop();
+
+    push();
+    translate(165, 280);
+    rotate(radians(-10));
+    rect(0, 0, 80, 50);
+    pop();
+
+    push();
+    translate(430, 125);
+    rotate(radians(-10));
+    rect(10, -90, 100, 200);
+    pop();
+
+    push();
+    translate(435, 300);
+    rotate(radians(10));
+    rect(0, 0, 80, 100);
+    pop();
+    rect(160, 350, 80, 150);
+    rect(440, 350, 80, 150);
 }
 
 function drawLeftDoorButtons() {
@@ -522,60 +589,60 @@ function mouseClicked() {
 
     // Left Door Detection
 
-    if (mouseX >= 12 && mouseX <= 37 && mouseY >= 197 && mouseY <= 221 && leftDoorClosed == false && leftDoorButtonAvailable == true) {
+    if (mouseX >= 12 && mouseX <= 37 && mouseY >= 197 && mouseY <= 221 && leftDoorClosed == false && leftDoorButtonAvailable == true && phoneGuyPickedUpOn == true) {
         FNAFDoorClose.play();
         leftDoorClosed = true;
         // print(leftDoorClosed);
     }
 
-    else if (mouseX >= 12 && mouseX <= 37 && mouseY >= 197 && mouseY <= 221 && leftDoorClosed == true && leftDoorButtonAvailable == false) {
+    else if (mouseX >= 12 && mouseX <= 37 && mouseY >= 197 && mouseY <= 221 && leftDoorClosed == true && leftDoorButtonAvailable == true && phoneGuyPickedUpOn == true) {
         FNAFDoorClose.play();
         leftDoorClosed = false;
-        // print(leftDoorClosed);
+        // print(rightDoorClosed);
     }
 
 
     // Right Door Detection
 
-    if (mouseX >= 567 && mouseX <= 592 && mouseY >= 197 && mouseY <= 221 && rightDoorClosed == false) {
+    if (mouseX >= 567 && mouseX <= 592 && mouseY >= 197 && mouseY <= 221 && rightDoorClosed == false && phoneGuyPickedUpOn == true && rightDoorButtonAvailable == true) {
         FNAFDoorClose.play();
         rightDoorClosed = true;
-        // print(leftDoorClosed);
+        // print(rightDoorClosed);
     }
-    else if (mouseX >= 567 && mouseX <= 592 && mouseY >= 197 && mouseY <= 221 && rightDoorClosed == true) {
+    else if (mouseX >= 567 && mouseX <= 592 && mouseY >= 197 && mouseY <= 221 && rightDoorClosed == true && phoneGuyPickedUpOn == true && rightDoorButtonAvailable == true) {
         FNAFDoorClose.play();
         rightDoorClosed = false;
-        // print(leftDoorClosed);
+        // print(rightDoorClosed);
     }
 
 
     // Left Light Button Detection
 
-    if (mouseX >= 12 && mouseX <= 38 && mouseY >= 267 && mouseY <= 292 && leftLightActivated == false) {
+    if (mouseX >= 12 && mouseX <= 38 && mouseY >= 267 && mouseY <= 292 && leftLightActivated == false && phoneGuyPickedUpOn == true) {
         leftLightActivated = true;
         // print(leftLightActivated);
     }
 
-    else if (mouseX >= 12 && mouseX <= 38 && mouseY >= 267 && mouseY <= 292 && leftLightActivated == true) {
+    else if (mouseX >= 12 && mouseX <= 38 && mouseY >= 267 && mouseY <= 292 && leftLightActivated == true && phoneGuyPickedUpOn == true) {
         leftLightActivated = false;
         // print(leftLightActivated);
     }
 
     // Right Light Button Detection
 
-    if (mouseX >= 568 && mouseX <= 592 && mouseY >= 267 && mouseY <= 292 && rightLightActivated == false) {
+    if (mouseX >= 568 && mouseX <= 592 && mouseY >= 267 && mouseY <= 292 && rightLightActivated == false && phoneGuyPickedUpOn == true) {
         rightLightActivated = true;
         // print(rightLightActivated);
     }
 
-    else if (mouseX >= 568 && mouseX <= 592 && mouseY >= 267 && mouseY <= 292 && rightLightActivated == true) {
+    else if (mouseX >= 568 && mouseX <= 592 && mouseY >= 267 && mouseY <= 292 && rightLightActivated == true && phoneGuyPickedUpOn == true) {
         rightLightActivated = false;
         // print(rightLightActivated);
     }
 
     // Phone Guy Detection
     if (mouseX >= 335 && mouseX <= 395 && mouseY >= 198 && mouseY <= 235 && phoneGuyPickedUpOn == false && textFadeInEffectTransparency <= 0) {
-        print("Phone picked up")
+        // print("Phone picked up")
         phoneGuyPickedUpOn = true;
         phoneGuyRinging = false;
         if (phoneGuyRingSound.isPlaying()) {
@@ -584,10 +651,17 @@ function mouseClicked() {
         }
     }
 
-    if (mouseX >= 426 && mouseX <= 498 && mouseY >= 312 && mouseY <= 348 && phoneGuyPickedUpOn == true) {
+    if (mouseX >= 426 && mouseX <= 498 && mouseY >= 312 && mouseY <= 348 && phoneGuyPickedUpOn == true && phoneGuyDialogueStage < 8 && phoneGuyHungUpOn == false) {
         // print("Hung Up");
         phoneGuyPickupSound.play();
         phoneGuyHungUpOn = true;
+        phone1.stop();
+        phone2.stop();
+        phone3.stop();
+        phone4.stop();
+        phone5.stop();
+        phone6.stop();
+        phone7.stop();
     }
 
 
@@ -595,36 +669,69 @@ function mouseClicked() {
 
 function drawLeftDoor() {
 
-    if (leftDoorClosed == true && leftDoorY <= 260) {
-        leftDoorY += 30;
+    // if (leftDoorClosed == true && leftDoorY >= 260) {
+    //     leftDoorY += 30;
+    //     leftDoorButtonAvailable = false;
+    // }
+
+    if (leftDoorClosed == true && leftDoorY < 300) {
+        leftDoorY += 40;
         leftDoorButtonAvailable = false;
     }
 
-    if (leftDoorClosed == false && leftDoorY >= -50) {
-        leftDoorY -= 30;
+    if (leftDoorClosed == true && leftDoorY >= 300) {
+        leftDoorButtonAvailable = true;
+    }
+
+    if (leftDoorClosed == false && leftDoorY > 10) {
+        leftDoorY -= 40;
+        leftDoorButtonAvailable = false;
+    }
+
+    if (leftDoorClosed == false && leftDoorY == 10) {
         leftDoorButtonAvailable = true;
     }
 
     strokeWeight(1);
     stroke(0);
     fill(150);
-    rect(80, leftDoorY, 75, 330);
+    // rect(80, leftDoorY, 75, 360);
+    push();
+    rotate(radians(-2.5));
+    noStroke();
+    rect(60, leftDoorY - 100, 100, 360);
+    pop();
 }
 
 function drawRightDoor() {
 
-    if (rightDoorClosed == true && rightDoorY <= 260) {
-        rightDoorY += 30;
+    if (rightDoorClosed == true && rightDoorY < 300) {
+        rightDoorY += 40;
+        rightDoorButtonAvailable = false;
     }
 
-    if (rightDoorClosed == false && rightDoorY >= -50) {
-        rightDoorY -= 30;
+    if (rightDoorClosed == true && rightDoorY >= 300) {
+        rightDoorButtonAvailable = true;
+    }
+
+    if (rightDoorClosed == false && rightDoorY > 10) {
+        rightDoorY -= 40;
+        rightDoorButtonAvailable = false;
+    }
+
+    if (rightDoorClosed == false && rightDoorY == 10) {
+        rightDoorButtonAvailable = true;
     }
 
     strokeWeight(1);
     stroke(0);
     fill(150);
-    rect(518, rightDoorY, 75, 330);
+    // rect(80, leftDoorY, 75, 360);
+    push();
+    rotate(radians(2.5));
+    noStroke();
+    rect(540, rightDoorY - 100, 100, 360);
+    pop();
 }
 
 function drawLeftLight() {           // If the sound is NOT playing, turn it on
@@ -669,7 +776,7 @@ function phoneGuyLogic() {
         noStroke();
         fill(0, 255, 0, 100);
         rect(365, 215, 65, 40);
-        print("Ring ring, pick up the phone");
+        // print("Ring ring, pick up the phone");
 
         // If the ring sound is not playing, play it
         if (phoneGuyRinging == true && !phoneGuyRingSound.isPlaying()) {
@@ -680,25 +787,273 @@ function phoneGuyLogic() {
 
 function drawPhoneGuyDialogueUI() {
     if (phoneGuyPickedUpOn == true && phoneGuyHungUpOn == false) {
-        fill(190);
-        stroke(0);
-        strokeWeight(1);
-        rect(300, 300, 400, 100);
-        strokeWeight(2.5);
-        line(200, 250, 200, 350);
-        line(200, 325, 100, 325);
-        fill(255);
-        textSize(15);
-        text("Phone Guy", 112.5, 342.5);
-        fill('black');
-        ellipse(150, 287.5, 55, 55);
-        fill('white');
-        text("Hey so uh, welcome to your One Singular", 210, 270);
-        text("Night!", 210, 290);
-        fill(190);
-        strokeWeight(1);
-        rect(463, 331, 70, 35);
-        fill('white');
-        text("Hang Up", 435, 335);
+        if (phoneGuyDialogueStage == 0) {
+            phoneGuyDialogueStage = 1;
+        }
+        phoneGuyTextInterval += 1;
+        // print(phoneGuyDialogueStage);
+
+        // Stage 1
+        if (phoneGuyDialogueStage == 1) {
+            if (!phone1.isPlaying() && phoneGuyDialogueStage == 1 && phoneGuySoundPlayed == 0) {
+                phone1.play();
+                phoneGuySoundPlayed = 1;
+                print(phoneGuySoundPlayed);
+            }
+            fill(190);
+            stroke(0);
+            strokeWeight(1);
+            rect(300, 300, 400, 100);
+            strokeWeight(2.5);
+            line(200, 250, 200, 350);
+            line(200, 325, 100, 325);
+            fill(255);
+            textSize(15);
+            text("Phone Guy", 112.5, 342.5);
+            fill('black');
+            ellipse(150, 287.5, 55, 55);
+            fill('white');
+            text("Hey so uh, welcome to your One Singular", 210, 270);
+            text("Night!", 210, 290);
+            fill(190);
+            strokeWeight(1);
+            rect(463, 331, 70, 35);
+            fill('white');
+            text("Hang Up", 435, 335);
+            if (phoneGuyTextInterval >= 170 && phoneGuyDialogueStage == 1) {
+                print("Next Dialogue");
+                phoneGuyTextInterval = 0;
+                phoneGuyDialogueStage = 2;
+                if (phoneGuyDialogueStage == 2) {
+                    phone1.stop();
+                    phoneGuySoundPlayed = 0;
+                }
+            }
+        }
+
+        // Stage 2
+        if (phoneGuyDialogueStage == 2) {
+            if (!phone2.isPlaying() && phoneGuyDialogueStage == 2 && phoneGuySoundPlayed == 0) {
+                phone2.play();
+                phoneGuySoundPlayed = 1;
+            }
+            fill(190);
+            stroke(0);
+            strokeWeight(1);
+            rect(300, 300, 400, 100);
+            strokeWeight(2.5);
+            line(200, 250, 200, 350);
+            line(200, 325, 100, 325);
+            fill(255);
+            textSize(15);
+            text("Phone Guy", 112.5, 342.5);
+            fill('black');
+            ellipse(150, 287.5, 55, 55);
+            fill('white');
+            text("Allow me to teach you how to play.", 210, 270);
+            text("", 210, 290);
+            fill(190);
+            strokeWeight(1);
+            rect(463, 331, 70, 35);
+            fill('white');
+            text("Hang Up", 435, 335);
+            if (phoneGuyTextInterval >= 70 && phoneGuyDialogueStage == 2) {
+                print("Next Dialogue");
+                phoneGuyTextInterval = 0;
+                phoneGuyDialogueStage = 3;
+                if (phoneGuyDialogueStage == 3) {
+                    phone2.stop();
+                    phoneGuySoundPlayed = 0;
+                }
+            }
+        }
+
+        // Stage 3
+        if (phoneGuyDialogueStage == 3) {
+            if (!phone3.isPlaying() && phoneGuyDialogueStage == 3 && phoneGuySoundPlayed == 0) {
+                phone3.play();
+                phoneGuySoundPlayed = 1;
+            }
+            fill(190);
+            stroke(0);
+            strokeWeight(1);
+            rect(300, 300, 400, 100);
+            strokeWeight(2.5);
+            line(200, 250, 200, 350);
+            line(200, 325, 100, 325);
+            fill(255);
+            textSize(15);
+            text("Phone Guy", 112.5, 342.5);
+            fill('black');
+            ellipse(150, 287.5, 55, 55);
+            fill('white');
+            text("So if you didn't notice already, the", 210, 270);
+            text("button on the bottom is your cameras.", 210, 290);
+            fill(190);
+            strokeWeight(1);
+            rect(463, 331, 70, 35);
+            fill('white');
+            text("Hang Up", 435, 335);
+            if (phoneGuyTextInterval >= 120 && phoneGuyDialogueStage == 3) {
+                // print("Next Dialogue");
+                phoneGuyTextInterval = 0;
+                phoneGuyDialogueStage = 4;
+                if (phoneGuyDialogueStage == 4) {
+                    phone3.stop();
+                    phoneGuySoundPlayed = 0;
+                }
+            }
+        }
+
+        // Stage 4
+        if (phoneGuyDialogueStage == 4) {
+            if (!phone4.isPlaying() && phoneGuyDialogueStage == 4 && phoneGuySoundPlayed == 0) {
+                phone4.play();
+                phoneGuySoundPlayed = 1;
+            }
+            fill(190);
+            stroke(0);
+            strokeWeight(1);
+            rect(300, 300, 400, 100);
+            strokeWeight(2.5);
+            line(200, 250, 200, 350);
+            line(200, 325, 100, 325);
+            fill(255);
+            textSize(15);
+            text("Phone Guy", 112.5, 342.5);
+            fill('black');
+            ellipse(150, 287.5, 55, 55);
+            fill('white');
+            text("The door and light buttons in your office", 210, 270);
+            text("do exactly what you think they do.", 210, 290);
+            fill(190);
+            strokeWeight(1);
+            rect(463, 331, 70, 35);
+            fill('white');
+            text("Hang Up", 435, 335);
+            if (phoneGuyTextInterval >= 120 && phoneGuyDialogueStage == 4) {
+                print("Next Dialogue");
+                phoneGuyTextInterval = 0;
+                phoneGuyDialogueStage = 5;
+                if (phoneGuyDialogueStage == 5) {
+                    phone4.stop();
+                    phoneGuySoundPlayed = 0;
+                }
+            }
+        }
+
+        // Stage 5
+        if (phoneGuyDialogueStage == 5) {
+            if (!phone5.isPlaying() && phoneGuyDialogueStage == 5 && phoneGuySoundPlayed == 0) {
+                phone5.play();
+                phoneGuySoundPlayed = 1;
+            }
+            fill(190);
+            stroke(0);
+            strokeWeight(1);
+            rect(300, 300, 400, 100);
+            strokeWeight(2.5);
+            line(200, 250, 200, 350);
+            line(200, 325, 100, 325);
+            fill(255);
+            textSize(15);
+            text("Phone Guy", 112.5, 342.5);
+            fill('black');
+            ellipse(150, 287.5, 55, 55);
+            fill('white');
+            text("So I mean your only concern here is that", 210, 270);
+            text("the animatronics will try and stuff you", 210, 290);
+            text("in a suit if they get in your office.", 210, 310);
+            fill(190);
+            strokeWeight(1);
+            rect(463, 331, 70, 35);
+            fill('white');
+            text("Hang Up", 435, 335);
+            if (phoneGuyTextInterval >= 170 && phoneGuyDialogueStage == 5) {
+                print("Next Dialogue");
+                phoneGuyTextInterval = 0;
+                phoneGuyDialogueStage = 6;
+                if (phoneGuyDialogueStage == 6) {
+                    phone5.stop();
+                    phoneGuySoundPlayed = 0;
+                }
+            }
+        }
+
+        // Stage 6
+        if (phoneGuyDialogueStage == 6) {
+            if (!phone6.isPlaying() && phoneGuyDialogueStage == 6 && phoneGuySoundPlayed == 0) {
+                phone6.play();
+                phoneGuySoundPlayed = 1
+            }
+            fill(190);
+            stroke(0);
+            strokeWeight(1);
+            rect(300, 300, 400, 100);
+            strokeWeight(2.5);
+            line(200, 250, 200, 350);
+            line(200, 325, 100, 325);
+            fill(255);
+            textSize(15);
+            text("Phone Guy", 112.5, 342.5);
+            fill('black');
+            ellipse(150, 287.5, 55, 55);
+            fill('white');
+            text("But I think you'll be perfectly fine", 210, 270);
+            text("I shouldn't have to tell you how to play.", 210, 290);
+            fill(190);
+            strokeWeight(1);
+            rect(463, 331, 70, 35);
+            fill('white');
+            text("Hang Up", 435, 335);
+            if (phoneGuyTextInterval >= 140 && phoneGuyDialogueStage == 6) {
+                print("Next Dialogue");
+                phoneGuyTextInterval = 0;
+                phoneGuyDialogueStage = 7;
+                if (phoneGuyDialogueStage == 7) {
+                    phone6.stop();
+                    phoneGuySoundPlayed = 0;
+                }
+            }
+        }
+
+        // Stage 7
+        if (phoneGuyDialogueStage == 7) {
+            if (!phone7.isPlaying() && phoneGuyDialogueStage == 7 && phoneGuySoundPlayed == 0) {
+                phone7.play();
+                phoneGuySoundPlayed = 1;
+            }
+            fill(190);
+            stroke(0);
+            strokeWeight(1);
+            rect(300, 300, 400, 100);
+            strokeWeight(2.5);
+            line(200, 250, 200, 350);
+            line(200, 325, 100, 325);
+            fill(255);
+            textSize(15);
+            text("Phone Guy", 112.5, 342.5);
+            fill('black');
+            ellipse(150, 287.5, 55, 55);
+            fill('white');
+            text("Anyways good luck, your minimum wage", 210, 270);
+            text("is counting on you.", 210, 290);
+            fill(190);
+            strokeWeight(1);
+            rect(463, 331, 70, 35);
+            fill('white');
+            text("Hang Up", 435, 335);
+            if (phoneGuyTextInterval >= 115 && phoneGuyDialogueStage == 7) {
+                print("Next Dialogue");
+                phoneGuyTextInterval = 0;
+                phoneGuyDialogueStage = 8;
+                if (phoneGuyDialogueStage == 8) {
+                    phone7.stop();
+                    phoneGuySoundPlayed = 0;
+                }
+            }
+        }
     }
 }
+
+
