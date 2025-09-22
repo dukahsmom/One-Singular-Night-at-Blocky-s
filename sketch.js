@@ -44,6 +44,7 @@ let phone4;
 let phone5;
 let phone6;
 let phone7;
+let camMapReference;
 
 // Menu Variables
 let staticLineX = 300;
@@ -66,17 +67,47 @@ let phoneGuySoundPlayed = 0;
 
 // Camera Variables
 let tabletX = 300;
-let tabletY = 600;
+let tabletY = 175; // Change to 600 when done
 let tabletOpened = false;
-let tabletAvailable = true
+let tabletAvailable = true;
+let screenCasting = false;
+
+// X Positions for Icons
+let cam1AXPos;
+let cam1BXPos;
+let cam1CXPos;
+let cam2AXPos = 100;
+let cam2BXPos = 200;
+let cam3XPos = 200;
+let cam4AXPos = 200;
+let cam4BXPos = 100;
+let cam5XPos;
+let cam6XPos;
+let cam7XPos;
+let youIconXPos = 300;
+
+// Y Positions for Icons
+let cam1AYPos;
+let cam1BYPos;
+let cam1CYPos;
+let cam2AYPos = 197.5;
+let cam2BYPos = 197.5;
+let cam3YPos = 300;
+let cam4AYPos = 250;
+let cam4BYPos = 250;
+let cam5YPos;
+let cam6YPos;
+let cam7YPos;
+let youIconYPos = 150;
+
 
 // Left Door Variables
-let leftDoorY = 10;
+let leftDoorY = 0;
 let leftDoorButtonAvailable = true;
 let leftDoorClosed = false;
 
 // Right Door Variables
-let rightDoorY = 10;
+let rightDoorY = 0;
 let rightDoorButtonAvailable = true;
 let rightDoorClosed = false;
 
@@ -90,6 +121,7 @@ let rightLightSoundPlayed = false;
 
 function preload() {
     FanBlades = loadImage("img/Fan Spinning.gif");
+    camMapReference = loadImage("img/CameraMap.jpg");
     plushieNoseSound = loadSound("mp3/FNAF_Nose.mp3");
     FNAFDoorClose = loadSound("mp3/FNAF Door Close.mp3");
     FNAFLightFlick = loadSound("mp3/LightSound.mp3");
@@ -562,7 +594,6 @@ function gameStarted() {
     drawCameraMonitor();
     drawCameraScreen();
     drawCameraButton();
-    print(tabletY);
 }
 
 function mouseDebug() {
@@ -621,30 +652,173 @@ function drawCameraMonitor() {
     fill('white');
     rect(170, tabletY + 185, 40, 40, 10); // 4th Argument is used to curve the rectangle
 
+    fill('black');
+    rect(300, tabletY + 26, 495, 235);
 
-    if (tabletOpened == true && tabletY > 170) {
-        tabletY -= 25;
-        tabletAvailable = false;
-    }
+    // Uncomment when done
 
-    if (tabletOpened == true && tabletY == 170) {
-        tabletAvailable = true;
-    }
+    // if (tabletOpened == true && tabletY > 175) {
+    //     tabletY -= 25;
+    //     tabletAvailable = false;
+    //     screenCasting = false;
+    // }
 
-    if (tabletOpened == false && tabletY < 600) {
-        tabletY += 25;
-        tabletAvailable = false;
-    }
+    // if (tabletOpened == true && tabletY == 175) {
+    //     tabletAvailable = true;
+    //     screenCasting = true;
+    // }
 
-    if (tabletOpened == false && tabletY == 600) {
-        tabletAvailable = true;
-    }
+    // if (tabletOpened == false && tabletY < 600) {
+    //     tabletY += 25;
+    //     tabletAvailable = false;
+    //     screenCasting = false;
+    // }
+
+    // if (tabletOpened == false && tabletY == 600) {
+    //     tabletAvailable = true;
+    //     screenCasting = false;
+    // }
 }
 
 function drawCameraScreen() {
-    fill('black');
-    rect(300, tabletY + 26, 495, 235);
+    // Camera Map
+    image(camMapReference, 400, 200, 200, 200); // Reference image for design
+
+
+    // YOU Icon
+    fill('white');
+    stroke('white');
+    strokeWeight(0.2);
+    textSize(15);
+    rect(youIconXPos, youIconYPos, 10, 10);
+    text("YOU", youIconXPos - 15, youIconYPos - 10);
+
+
+    // CAM 2B Icon
+    fill(100);
+    stroke('white');
+    strokeWeight(2);
+    rect(cam2BXPos, cam2BYPos, 45, 35);
+    fill('white');
+    strokeWeight(1);
+    textSize(15);
+    text("CAM", cam2BXPos - 20, cam2BYPos - 2.5);
+    text("2B", cam2BXPos - 20, cam2BYPos + 12.5);
+
+
+    // CAM 2A Icon
+    fill(100);
+    stroke('white');
+    strokeWeight(2);
+    rect(cam2AXPos, cam2AYPos, 45, 35);
+    fill('white');
+    strokeWeight(1);
+    textSize(15);
+    text("CAM", cam2AXPos - 20, cam2AYPos - 2.5);
+    text("2A", cam2AXPos - 20, cam2AYPos + 12.5);
+
+    // CAM 4B Icon
+    fill(100);
+    stroke('white');
+    strokeWeight(2);
+    rect(cam4BXPos, cam4BYPos, 45, 35);
+    fill('white');
+    strokeWeight(1);
+    textSize(15);
+    text("CAM", cam4BXPos - 20, cam4BYPos - 2.5);
+    text("4B", cam4BXPos - 20, cam4BYPos + 12.5);
+
+    // CAM 4A Icon
+    fill(100);
+    stroke('white');
+    strokeWeight(2);
+    rect(cam4AXPos, cam4AYPos, 45, 35);
+    fill('white');
+    strokeWeight(1);
+    textSize(15);
+    text("CAM", cam4AXPos - 20, cam4AYPos - 2.5);
+    text("4A", cam4AXPos - 20, cam4AYPos + 12.5);
+
+    // CAM 3 Icon
+    fill(100);
+    stroke('white');
+    strokeWeight(2);
+    rect(cam3XPos, cam3YPos, 45, 35);
+    fill('white');
+    strokeWeight(1);
+    textSize(15);
+    text("CAM", cam3XPos - 20, cam3YPos - 2.5);
+    text("3", cam3XPos - 20, cam3YPos + 12.5);
+
+    // CAM 6 Icon
+    fill(100);
+    stroke('white');
+    strokeWeight(2);
+    rect(100, 300, 45, 35); // X: 100, Y: 300
+    fill('white');
+    strokeWeight(1);
+    textSize(15);
+    text("CAM", 80, 297.5);
+    text("6", 80, 312.5);
+
+    // CAM 7 Icon
+    fill(100);
+    stroke('white');
+    strokeWeight(2);
+    rect(300, 300, 45, 35);
+    fill('white');
+    strokeWeight(1);
+    textSize(15);
+    text("CAM", 280, 297.5);
+    text("7", 280, 312.5);
+
+    // CAM 1C Icon
+    fill(100);
+    stroke('white');
+    strokeWeight(2);
+    rect(300, 250, 45, 35);
+    fill('white');
+    strokeWeight(1);
+    textSize(15);
+    text("CAM", 280, 247.5);
+    text("1C", 280, 262.5);
+
+    // CAM 1B Icon
+    fill(100);
+    stroke('white');
+    strokeWeight(2);
+    rect(300, 200, 45, 35);
+    fill('white');
+    strokeWeight(1);
+    textSize(15);
+    text("CAM", 280, 197.5);
+    text("1B", 280, 212.5);
+
+    // CAM 1A Icon
+    fill(100);
+    stroke('white');
+    strokeWeight(2);
+    rect(400, 250, 45, 35);
+    fill('white');
+    strokeWeight(1);
+    textSize(15);
+    text("CAM", 380, 247.5);
+    text("1A", 380, 262.5);
+
+    // CAM 5 Icon
+    fill(100);
+    stroke('white');
+    strokeWeight(2);
+    rect(400, 300, 45, 35);
+    fill('white');
+    strokeWeight(1);
+    textSize(15);
+    text("CAM", 380, 297.5);
+    text("5", 380, 312.5);
 }
+
+
+
 
 function mouseClicked() {
 
@@ -741,12 +915,10 @@ function mouseClicked() {
 
     if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == false && tabletAvailable == true) {
         tabletOpened = true;
-        print(tabletOpened);
     }
 
     else if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == true && tabletAvailable == true) {
         tabletOpened = false;
-        print(tabletOpened);
     }
 
 
