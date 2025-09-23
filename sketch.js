@@ -30,7 +30,7 @@
 
 
 // Rather complex things I should cover in the project that I can't cover
-// consistently
+// consistently (also reference notes fsor myself)
 
 // Rotation
 
@@ -124,6 +124,13 @@ let phoneGuyDialogueStage = 0;
 let phoneGuyTextInterval = 0;
 let phoneGuySoundPlayed = 0;
 
+// Time Variables
+let time = 12;
+
+// Power Variables
+let powerConsumptionLevel = 1;
+let power = 100;
+
 // Camera Variables
 let tabletX = 300;
 let tabletY = 600; // Change to 600 when done
@@ -134,6 +141,29 @@ let CameraMapSize = 0.55;
 let cameraOpenSoundOnCooldown = false;
 let cameraStreamSoundOnCooldown = false;
 let currentCamera = 0;
+
+// Animatronic Variables
+
+// Freddy Variables
+let freddyCamPosition = 1;
+let freddyInOffice = false;
+let readyFreddy = false; // I took the oppertunity to name it ready freddy instead of freddy ready
+// because it's funny
+
+// Foxy Variables
+let foxyCamPosition = 1.2;
+let foxyRunDistance = 0;
+let foxyInOffice = false;
+let foxyStage = 0;
+let foxyReady = false;
+let foxyRunning = false;
+
+// Golden Freddy Variables
+let goldenFreddySpawned = false;
+let goldenFreddyStareDuration = 0;
+let goldenFreddyDuration = 0;
+let goldenFreddyDurationSetCooldown = false;
+let goldenFreddyStareDurationSetCooldown = false;
 
 // X Positions for Icons
 let cam1AXPos = 420;
@@ -220,10 +250,10 @@ function setup() {
 function draw() {
     background(0);
 
-    drawMainMenu();
-    // gameStarted();
+    // drawMainMenu();
+    gameStarted();
 
-    // mouseDebug();
+    mouseDebug();
 }
 
 // function drawMainMenu() {
@@ -416,6 +446,7 @@ function drawMainMenu() {
         phoneGuyTextInterval = 0;
         phoneGuySoundPlayed = 0;
 
+
         // Camera Variables
         tabletX = 300;
         tabletY = 600;
@@ -426,6 +457,21 @@ function drawMainMenu() {
         cameraOpenSoundOnCooldown = false;
         cameraStreamSoundOnCooldown = false;
         currentCamera = 0;
+
+        // Animatronic Variables
+
+        // Freddy Variables
+        freddyCamPosition = 1
+        freddyInOffice = false;
+        readyFreddy = false;
+
+        // Foxy Variables
+        foxyCamPosition = 1.2;
+        foxyRunDistance = 0;
+        foxyInOffice = false;
+        foxyStage = 0;
+        foxyReady = false;
+        foxyRunning = false;
 
         // Left Door Variables
         leftDoorY = 0;
@@ -581,8 +627,8 @@ function drawOfficeFrame() {
 
     push();
     translate(520, 400);
-    rotate(radians(10));
-    rect(0, 0, 80, 40);
+    rotate(radians(25));
+    rect(0, 0, 100, 40);
     pop();
 
     push();
@@ -593,8 +639,8 @@ function drawOfficeFrame() {
 
     push();
     translate(80, 400);
-    rotate(radians(-15));
-    rect(0, 0, 90, 40);
+    rotate(radians(-25));
+    rect(0, 0, 100, 40);
     pop();
 
     push();
@@ -730,6 +776,11 @@ function gameStarted() {
     drawCameraScreen();
     drawCameraButton();
     drawBonnieScare();
+
+    // Animatronic Logic
+    freddyLogic();
+    foxyLogic();
+    goldenFreddyLogic();
 }
 
 function mouseDebug() {
@@ -879,12 +930,13 @@ function drawCameraScreen() {
             youIconYPos - 10 * CameraMapSize);
 
         // Cam Icons
-        // I know they look terrifying to look at but they're understandable
-        // once you really look at them
+        // I know they seem terrifying to look at but they're understandable
+        // once you really look at them it's just big because
+        // I kept adding * CameraMapSize to the scale
 
 
         // CAM 1A
-        if (currentCamera === 1.0) {
+        if (currentCamera === 1) {
             fill(147, 180, 5);
         } else {
             fill(100);
@@ -920,7 +972,7 @@ function drawCameraScreen() {
         text("1C", cam1CXPos - 20 * CameraMapSize, cam1CYPos + 12.5 * CameraMapSize);
 
         // CAM 2A
-        if (currentCamera === 2.0) {
+        if (currentCamera === 2) {
             fill(147, 180, 5);
         } else {
             fill(100);
@@ -956,7 +1008,7 @@ function drawCameraScreen() {
         text("3", cam3XPos - 20 * CameraMapSize, cam3YPos + 12.5 * CameraMapSize);
 
         // CAM 4A
-        if (currentCamera === 4.0) {
+        if (currentCamera === 4) {
             fill(147, 180, 5);
         } else {
             fill(100);
@@ -1018,9 +1070,10 @@ function drawCameraScreen() {
 
     }
 
+    // The ACTUAL Screens
+
     if (screenCasting == true && currentCamera == 0) {
 
-        // Actual Monitor Screen
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
@@ -1032,40 +1085,53 @@ function drawCameraScreen() {
 
     if (screenCasting == true && currentCamera == 1) {
 
-        // Actual Monitor Screen
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
         textSize(30);
         text("1A", 155, 210);
         textSize(15);
+
+        if (freddyCamPosition == currentCamera) {
+            text("Freddy is Here", 125, 230);
+        }
     }
+
 
     if (screenCasting == true && currentCamera == 1.1) {
 
-        // Actual Monitor Screen
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
         textSize(30);
         text("1B", 155, 210);
         textSize(15);
+
+        if (freddyCamPosition == currentCamera) {
+            text("Freddy is Here", 125, 230);
+        }
     }
 
     if (screenCasting == true && currentCamera == 1.2) {
 
-        // Actual Monitor Screen
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
         textSize(30);
         text("1C", 155, 210);
         textSize(15);
+
+        if (freddyCamPosition == currentCamera) {
+            text("Freddy is Here", 125, 230);
+        }
+
+        if (foxyCamPosition == currentCamera) {
+            text("Foxy is here", 125, 250)
+        }
     }
 
     if (screenCasting == true && currentCamera == 5) {
 
-        // Actual Monitor Screen
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
@@ -1076,7 +1142,6 @@ function drawCameraScreen() {
 
     if (screenCasting == true && currentCamera == 3) {
 
-        // Actual Monitor Screen
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
@@ -1088,24 +1153,30 @@ function drawCameraScreen() {
 
     if (screenCasting == true && currentCamera == 2) {
 
-        // Actual Monitor Screen
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
         textSize(30);
         text("2A", 155, 210);
         textSize(15);
+
+        if (foxyCamPosition == currentCamera) {
+            text("Foxy is here", 125, 250)
+        }
     }
 
     if (screenCasting == true && currentCamera == 2.1) {
 
-        // Actual Monitor Screen
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
         textSize(30);
         text("2B", 155, 210);
         textSize(15);
+
+        if (freddyCamPosition == 2.1) {
+            text("Freddy is Here", 125, 230);
+        }
     }
 
     if (screenCasting == true && currentCamera == 4) {
@@ -1250,11 +1321,11 @@ function mouseClicked() {
 
     // Camera Button Detection
 
-    if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == false && tabletAvailable == true && phoneGuyPickedUpOn == true) {
+    if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == false && tabletAvailable == true && phoneGuyPickedUpOn == false) {
         tabletOpened = true;
     }
 
-    else if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == true && tabletAvailable == true && phoneGuyPickedUpOn == true) {
+    else if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == true && tabletAvailable == true && phoneGuyPickedUpOn == false) {
         tabletOpened = false;
     }
 
@@ -1708,6 +1779,18 @@ function keyPressed() {
         fnafCutScream.play();
         bonnieScare = true;
     }
+
+    if (key === 'm') {
+        readyFreddy = true;
+    }
+
+    if (key === 'n') {
+        foxyReady = true;
+    }
+
+    if (key === 'g') {
+        goldenFreddySpawned = true;
+    }
 }
 
 function drawBonnieScare() {
@@ -1722,5 +1805,120 @@ function drawBonnieScare() {
         bonnieScareTime = 0;
         bonnieScareSize = 1;
         gameBegan = false;
+    }
+}
+
+function freddyLogic() {
+    if (freddyCamPosition == 1 && readyFreddy == true) {
+        freddyCamPosition = 1.1;
+        readyFreddy = false;
+    }
+
+    if (freddyCamPosition == 1.1 && readyFreddy == true) {
+        freddyCamPosition = 1.2;
+        readyFreddy = false;
+    }
+
+    if (freddyCamPosition == 1.2 && readyFreddy == true && leftDoorClosed == false) {
+        freddyCamPosition = 0;
+        freddyInOffice = true;
+    }
+
+    if (freddyCamPosition == 1.2 && readyFreddy == true && leftDoorClosed == true) {
+        freddyCamPosition = 1;
+        readyFreddy = false;
+        print("Freddy: Bum");
+    }
+
+    if (freddyInOffice == true && tabletY < 600) {
+        freddyCamPosition = 0;
+        freddyInOffice = true;
+        print("Freddy: Close your camera bub");
+    }
+
+    if (freddyInOffice == true && tabletY == 600) {
+        freddyCamPosition = 0;
+        freddyInOffice = true;
+        print("Freddy: Boo");
+    }
+
+}
+
+function foxyLogic() {
+    if (foxyStage == 0 && foxyReady == true) {
+        foxyStage = 1;
+        foxyReady = false;
+    }
+
+    if (foxyStage == 1 && foxyReady == true) {
+        foxyStage = 2;
+        foxyReady = false;
+    }
+
+    if (foxyStage == 2 && foxyReady == true) {
+        foxyStage = 3;
+        foxyReady = false;
+    }
+
+    if (foxyStage == 3 && foxyReady == true) {
+        foxyRunDistance = 250;
+        foxyRunning = true;
+        foxyReady = false;
+    }
+
+    if (foxyRunning == true) {
+        foxyCamPosition = 2
+        foxyRunDistance -= 5
+        print(foxyRunDistance);
+    }
+
+    if (foxyRunDistance == 5 && leftDoorClosed == false) {
+        print("Foxy: I've got you now!")
+        foxyRunning = false;
+        foxyRunDistance = 0;
+    }
+
+    if (foxyRunDistance == 5 && leftDoorClosed == true) {
+        print("Foxy: I do NOT got you now.. :(")
+        foxyRunning = false;
+        foxyRunDistance = 0;
+    }
+}
+
+
+// Finish this
+function goldenFreddyLogic() {
+
+    if (goldenFreddySpawned == true && goldenFreddyDurationSetCooldown == false) {
+        goldenFreddyDuration = 1000;
+        goldenFreddyDurationSetCooldown = true;
+    }
+
+    if (goldenFreddySpawned == true) {
+        goldenFreddyDuration -= 5
+        print(goldenFreddyDuration)
+    }
+
+    if (goldenFreddySpawned == true && goldenFreddyStareDurationSetCooldown && monitorOpen == false) {
+        goldenFreddyStareDuration = 200;
+        goldenFreddyStareDurationSetCooldown = true;
+        print(goldenFreddyStareDuration)
+    }
+
+    if (goldenFreddySpawned == true)
+    goldenFreddyStareDuration -= 5;
+
+    if (goldenFreddyStareDuration < 1 && goldenFreddySpawned == true) {
+        print("*Golden Freddy Scream*")
+    }
+
+    if (goldenFreddyDuration < 10 && goldenFreddySpawned == true) {
+        print("*Golden Freddy go no scream")
+        goldenFreddySpawned = false;
+    }
+
+    if (goldenFreddySpawned == false) {
+        goldenFreddyDurationSetCooldown = false;
+        goldenFreddyStareDuration = 0;
     }
 }
