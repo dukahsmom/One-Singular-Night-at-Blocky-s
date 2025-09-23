@@ -1250,11 +1250,11 @@ function mouseClicked() {
 
     // Camera Button Detection
 
-    if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == false && tabletAvailable == true && phoneGuyPickedUpOn == false) {
+    if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == false && tabletAvailable == true && phoneGuyPickedUpOn == true) {
         tabletOpened = true;
     }
 
-    else if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == true && tabletAvailable == true && phoneGuyPickedUpOn == false) {
+    else if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == true && tabletAvailable == true && phoneGuyPickedUpOn == true) {
         tabletOpened = false;
     }
 
