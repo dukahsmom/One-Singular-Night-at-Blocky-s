@@ -28,8 +28,59 @@
 // - Main Menu
 // - Game Over and Victory Screen
 
-// MP3's & GIFS
+
+// Rather complex things I should cover in the project that I can't cover
+// consistently
+
+// Rotation
+
+// I taught myself how to rotate rectangles effeciently, I did this by using the translate
+// function to move the origin to where I want the rectangle to be, then make the actual
+// rectangle's position 0,0 so it's at the new origin and it's centered so rotating it doesn't
+// mean I have to fight rotating it on an axis, I also use push to start it and pop to end it
+// If I don't do this, p5js won't know how much stuff to rotate and rotate the entire thing
+
+// Sounds
+
+// I yet again taught myself how to use sounds and isPlaying() functions, also including
+// "!" which means not in for instance if(!ExampleSound.isPlaying()) would just check if
+// it's not playing
+
+// Fade in/out Effects
+
+// For these it's pretty simple since I just use the alpha part of fill and attach it to a variable
+// then I do something like AlphaVariable -= 5; to give it a smooth fade in or += 5; for a fade out
+
+// Multiplication
+
+// Like the fade in/out effects, isn't really that hard to explain since all you're doing is just
+// using multiplication in p5js for stuff like sizes so if I set the size variable to 0.75, the
+// size of things attached to the variable are set to x0.75 size so like 0.75% of 15 if that's
+// how big one part is
+
+// Label Argument
+
+// This one is kind of the same as when you define something with x and y, giving it this format to follow
+// saying that the label, x, and y position are the only customizable things while the function
+// itself defines what the design should look like
+// If I were to say function drawTwoOutlinedCircles(x,y) {
+// stroke(0);
+// strokeWeight(5);
+// ellipse(x, y, 20, 20)
+// ellipse(x + 20, y, 20, 20)
+//}
+// I'd be defining what drawOutLineCircle means while being able to tell it where to draw multiple objects
+
+// Game Files
+
+// GIFS
 let FanBlades;
+
+// JPG's
+let camMapReference;
+let bonnieAngry;
+
+// MP3's
 let plushieNoseSound;
 let FNAFDoorClose;
 let FNAFLightFlick;
@@ -44,7 +95,15 @@ let phone4;
 let phone5;
 let phone6;
 let phone7;
-let camMapReference;
+let monitorOpen;
+let monitorStreaming;
+let fnafCutScream;
+let monitorSwitchSound;
+
+// Funny Event Variables
+let bonnieScare = false;
+let bonnieScareSize = 1;
+let bonnieScareTime = 0;
 
 // Menu Variables
 let staticLineX = 300;
@@ -67,38 +126,43 @@ let phoneGuySoundPlayed = 0;
 
 // Camera Variables
 let tabletX = 300;
-let tabletY = 175; // Change to 600 when done
+let tabletY = 600; // Change to 600 when done
 let tabletOpened = false;
 let tabletAvailable = true;
 let screenCasting = false;
+let CameraMapSize = 0.55;
+let cameraOpenSoundOnCooldown = false;
+let cameraStreamSoundOnCooldown = false;
+let currentCamera = 0;
 
 // X Positions for Icons
-let cam1AXPos;
-let cam1BXPos;
-let cam1CXPos;
-let cam2AXPos = 100;
-let cam2BXPos = 200;
-let cam3XPos = 200;
-let cam4AXPos = 200;
-let cam4BXPos = 100;
-let cam5XPos;
-let cam6XPos;
-let cam7XPos;
-let youIconXPos = 300;
+let cam1AXPos = 420;
+let cam1BXPos = 395;
+let cam1CXPos = 380;
+let cam2AXPos = 415;
+let cam2BXPos = 415;
+let cam3XPos = 370;
+let cam4AXPos = 485;
+let cam4BXPos = 485;
+let cam5XPos = 340;
+let cam6XPos = 552.5;
+let cam7XPos = 568;
+let youIconXPos = 450;
+
 
 // Y Positions for Icons
-let cam1AYPos;
-let cam1BYPos;
-let cam1CYPos;
-let cam2AYPos = 197.5;
-let cam2BYPos = 197.5;
-let cam3YPos = 300;
-let cam4AYPos = 250;
-let cam4BYPos = 250;
-let cam5YPos;
-let cam6YPos;
-let cam7YPos;
-let youIconYPos = 150;
+let cam1AYPos = 102.5;
+let cam1BYPos = 135;
+let cam1CYPos = 190;
+let cam2AYPos = 267;
+let cam2BYPos = 290;
+let cam3YPos = 252.5;
+let cam4AYPos = 267;
+let cam4BYPos = 290;
+let cam5YPos = 150;
+let cam6YPos = 250;
+let cam7YPos = 157.5;
+let youIconYPos = 300;
 
 
 // Left Door Variables
@@ -122,6 +186,7 @@ let rightLightSoundPlayed = false;
 function preload() {
     FanBlades = loadImage("img/Fan Spinning.gif");
     camMapReference = loadImage("img/CameraMap.jpg");
+    bonnieAngry = loadImage("img/Bonnie Angry.jpg")
     plushieNoseSound = loadSound("mp3/FNAF_Nose.mp3");
     FNAFDoorClose = loadSound("mp3/FNAF Door Close.mp3");
     FNAFLightFlick = loadSound("mp3/LightSound.mp3");
@@ -136,6 +201,10 @@ function preload() {
     phone5 = loadSound("mp3/Phone5.mp3");
     phone6 = loadSound("mp3/Phone6.mp3");
     phone7 = loadSound("mp3/Phone7.mp3");
+    monitorOpen = loadSound("mp3/FNAF Monitor Sound.mp3")
+    monitorStreaming = loadSound("mp3/FNAF Monitor Static.mp3")
+    fnafCutScream = loadSound("mp3/FNAF Cut Scream.mp3")
+    monitorSwitchSound = loadSound("mp3/Camera Switch Sound.mp3")
 }
 
 
@@ -151,12 +220,10 @@ function setup() {
 function draw() {
     background(0);
 
-    // drawMainMenu();
-    gameStarted();
+    drawMainMenu();
+    // gameStarted();
 
-    mouseDebug();
-
-
+    // mouseDebug();
 }
 
 // function drawMainMenu() {
@@ -325,6 +392,74 @@ function drawMainMenu() {
                 textFadeInEffectTransparency -= 2.5;
             }
         }
+    }
+
+    if (gameBegan == false) {
+        // Funny Event Variables
+        bonnieScare = false;
+        bonnieScareSize = 1;
+        bonnieScareTime = 0;
+
+        // Menu Variables
+        fadeInEffectWaitTime = 0;
+        fadeInEffectTransparency = 255;
+        textFadeInEffectTransparency = 255;
+        staticParticles = [];
+
+        // Start of Game Variables
+        phoneGuyRinging = false;
+        phoneGuyPickedUpOn = false;
+        phoneGuyHungUpOn = false;
+        phoneGuyDialogueBoxX = 300;
+        phoneGuyDialogueBoxY = 200;
+        phoneGuyDialogueStage = 0;
+        phoneGuyTextInterval = 0;
+        phoneGuySoundPlayed = 0;
+
+        // Camera Variables
+        tabletX = 300;
+        tabletY = 600;
+        tabletOpened = false;
+        tabletAvailable = true;
+        screenCasting = false;
+        CameraMapSize = 0.55;
+        cameraOpenSoundOnCooldown = false;
+        cameraStreamSoundOnCooldown = false;
+        currentCamera = 0;
+
+        // Left Door Variables
+        leftDoorY = 0;
+        leftDoorButtonAvailable = true;
+        leftDoorClosed = false;
+
+        // Right Door Variables
+        rightDoorY = 0;
+        rightDoorButtonAvailable = true;
+        rightDoorClosed = false;
+
+        // Left Light Button Variables
+        leftLightActivated = false;
+        leftLightSoundPlayed = false;
+
+        // Right Light Button Variables
+        rightLightActivated = false;
+        rightLightSoundPlayed = false;
+
+        plushieNoseSound.stop();
+        FNAFDoorClose.stop();
+        FNAFLightFlick.stop();
+        OfficeAmbience.stop();
+        phoneGuyRingSound.stop();
+        phoneGuyPickupSound.stop();
+        phone1.stop();
+        phone2.stop();
+        phone3.stop();
+        phone4.stop();
+        phone5.stop();
+        phone6.stop();
+        phone7.stop();
+        monitorOpen.stop();
+        monitorStreaming.stop();
     }
 }
 
@@ -594,6 +729,7 @@ function gameStarted() {
     drawCameraMonitor();
     drawCameraScreen();
     drawCameraButton();
+    drawBonnieScare();
 }
 
 function mouseDebug() {
@@ -627,194 +763,395 @@ function drawCameraMonitor() {
     strokeWeight(1);
     stroke(0);
     fill(120, 255);
-    rect(300, tabletY, 500, 300);
+    rect(300, tabletY, 590, 300);
 
     strokeWeight(2);
-    line(50, tabletY - 95, 550, tabletY - 95);
+    line(5, tabletY - 95, 595, tabletY - 95);
 
     fill(255);
     textSize(30);
     text("Rectangular Monitor v1.2", 140, tabletY - 110);
 
     fill(110);
-    rect(300, tabletY + 185, 500, 75);
-    ellipse(500, tabletY + 185, 60, 60);
+    rect(300, tabletY + 185, 590, 75);
+    ellipse(550, tabletY + 185, 60, 60);
 
     stroke(255);
     strokeWeight(3);
-    line(500, tabletY + 185, 500, tabletY + 156);
+    line(550, tabletY + 185, 550, tabletY + 156);
 
     strokeWeight(1);
     stroke('black');
     fill('red');
-    rect(100, tabletY + 185, 40, 40, 10); // 4th Argument is used to curve the rectangle
+    rect(50, tabletY + 185, 40, 40, 10); // 4th Argument is used to curve the rectangle
 
     fill('white');
-    rect(170, tabletY + 185, 40, 40, 10); // 4th Argument is used to curve the rectangle
+    rect(120, tabletY + 185, 40, 40, 10); // 4th Argument is used to curve the rectangle
 
     fill('black');
-    rect(300, tabletY + 26, 495, 235);
+    rect(300, tabletY + 26, 580, 235);
 
-    // Uncomment when done
+    if (tabletOpened == true && tabletY > 175) {
+        tabletY -= 25;
+        tabletAvailable = false;
+        screenCasting = false;
+        if (!monitorOpen.isPlaying() && cameraOpenSoundOnCooldown == false) {
+            monitorStreaming.stop();
+            monitorOpen.play();
+            cameraOpenSoundOnCooldown = true;
+        }
+    }
 
-    // if (tabletOpened == true && tabletY > 175) {
-    //     tabletY -= 25;
-    //     tabletAvailable = false;
-    //     screenCasting = false;
-    // }
+    if (tabletOpened == true && tabletY == 175) {
+        tabletAvailable = true;
+        screenCasting = true;
+        if (!monitorStreaming.isPlaying() && cameraStreamSoundOnCooldown == false) {
+            monitorStreaming.play();
+            cameraStreamSoundOnCooldown = true;
+            cameraOpenSoundOnCooldown = false;
+        }
+    }
 
-    // if (tabletOpened == true && tabletY == 175) {
-    //     tabletAvailable = true;
-    //     screenCasting = true;
-    // }
+    if (tabletOpened == false && tabletY < 600) {
+        tabletY += 25;
+        tabletAvailable = false;
+        screenCasting = false;
+        cameraStreamSoundOnCooldown = false;
+        if (monitorStreaming.isPlaying() || cameraOpenSoundOnCooldown == false) {
+            monitorStreaming.stop();
+            monitorOpen.play();
+            cameraOpenSoundOnCooldown = true;
+        }
+    }
 
-    // if (tabletOpened == false && tabletY < 600) {
-    //     tabletY += 25;
-    //     tabletAvailable = false;
-    //     screenCasting = false;
-    // }
-
-    // if (tabletOpened == false && tabletY == 600) {
-    //     tabletAvailable = true;
-    //     screenCasting = false;
-    // }
+    if (tabletOpened == false && tabletY == 600) {
+        tabletAvailable = true;
+        screenCasting = false;
+        cameraOpenSoundOnCooldown = false;
+    }
 }
 
 function drawCameraScreen() {
     // Camera Map
-    image(camMapReference, 400, 200, 200, 200); // Reference image for design
+    // image(camMapReference, 500, 200, 200, 200); // Reference image for design
 
 
-    // YOU Icon
-    fill('white');
-    stroke('white');
-    strokeWeight(0.2);
-    textSize(15);
-    rect(youIconXPos, youIconYPos, 10, 10);
-    text("YOU", youIconXPos - 15, youIconYPos - 10);
+    if (screenCasting == true) {
+        // General Outline for Camera Map
+        fill('white');
+        stroke('white');
+        strokeWeight(1.5);
+        noFill();
+        rect(450, 290, 27.5, 40);
+        rect(415, 270, 25, 80);
+        rect(485, 270, 25, 80);
+        rect(467.5, 295, 8, 10);
+        rect(431.5, 295, 8, 10);
+        rect(397, 262.5, 10, 10);
+        rect(379, 262.5, 25, 50);
+        rect(415, 225, 10, 10);
+        rect(485, 225, 10, 10);
+        rect(450, 172.5, 160, 95);
+        rect(360, 200, 20, 30);
+        rect(365, 140, 10, 10);
+        rect(350, 145, 18, 40);
+        rect(450, 115, 70, 20);
+        rect(535, 155, 10, 10);
+        rect(549, 175, 17.5, 85);
+        rect(563, 170, 10, 10);
+        rect(576, 170, 15, 20);
+        rect(563, 205, 10, 10);
+        rect(576, 205, 15, 20);
+        rect(515, 225, 10, 10);
+        rect(530, 253, 50, 45);
 
 
-    // CAM 2B Icon
-    fill(100);
-    stroke('white');
-    strokeWeight(2);
-    rect(cam2BXPos, cam2BYPos, 45, 35);
-    fill('white');
-    strokeWeight(1);
-    textSize(15);
-    text("CAM", cam2BXPos - 20, cam2BYPos - 2.5);
-    text("2B", cam2BXPos - 20, cam2BYPos + 12.5);
 
 
-    // CAM 2A Icon
-    fill(100);
-    stroke('white');
-    strokeWeight(2);
-    rect(cam2AXPos, cam2AYPos, 45, 35);
-    fill('white');
-    strokeWeight(1);
-    textSize(15);
-    text("CAM", cam2AXPos - 20, cam2AYPos - 2.5);
-    text("2A", cam2AXPos - 20, cam2AYPos + 12.5);
+        // YOU Icon
+        fill('white');
+        strokeWeight(0.2);
+        textSize(15 * CameraMapSize);
+        rect(youIconXPos, youIconYPos,
+            10 * CameraMapSize, 10 * CameraMapSize);
+        text("YOU",
+            youIconXPos - 15 * CameraMapSize,
+            youIconYPos - 10 * CameraMapSize);
 
-    // CAM 4B Icon
-    fill(100);
-    stroke('white');
-    strokeWeight(2);
-    rect(cam4BXPos, cam4BYPos, 45, 35);
-    fill('white');
-    strokeWeight(1);
-    textSize(15);
-    text("CAM", cam4BXPos - 20, cam4BYPos - 2.5);
-    text("4B", cam4BXPos - 20, cam4BYPos + 12.5);
+        // Cam Icons
+        // I know they look terrifying to look at but they're understandable
+        // once you really look at them
 
-    // CAM 4A Icon
-    fill(100);
-    stroke('white');
-    strokeWeight(2);
-    rect(cam4AXPos, cam4AYPos, 45, 35);
-    fill('white');
-    strokeWeight(1);
-    textSize(15);
-    text("CAM", cam4AXPos - 20, cam4AYPos - 2.5);
-    text("4A", cam4AXPos - 20, cam4AYPos + 12.5);
 
-    // CAM 3 Icon
-    fill(100);
-    stroke('white');
-    strokeWeight(2);
-    rect(cam3XPos, cam3YPos, 45, 35);
-    fill('white');
-    strokeWeight(1);
-    textSize(15);
-    text("CAM", cam3XPos - 20, cam3YPos - 2.5);
-    text("3", cam3XPos - 20, cam3YPos + 12.5);
+        // CAM 1A
+        if (currentCamera === 1.0) {
+            fill(147, 180, 5);
+        } else {
+            fill(100);
+        }
+        stroke('white'); strokeWeight(2);
+        rect(cam1AXPos, cam1AYPos, 45 * CameraMapSize, 35 * CameraMapSize);
+        fill('white'); strokeWeight(0); textSize(15 * CameraMapSize);
+        text("CAM", cam1AXPos - 20 * CameraMapSize, cam1AYPos - 2.5 * CameraMapSize);
+        text("1A", cam1AXPos - 20 * CameraMapSize, cam1AYPos + 12.5 * CameraMapSize);
 
-    // CAM 6 Icon
-    fill(100);
-    stroke('white');
-    strokeWeight(2);
-    rect(100, 300, 45, 35); // X: 100, Y: 300
-    fill('white');
-    strokeWeight(1);
-    textSize(15);
-    text("CAM", 80, 297.5);
-    text("6", 80, 312.5);
+        // CAM 1B
+        if (currentCamera === 1.1) {
+            fill(147, 180, 5);
+        } else {
+            fill(100);
+        }
+        stroke('white'); strokeWeight(2);
+        rect(cam1BXPos, cam1BYPos, 45 * CameraMapSize, 35 * CameraMapSize);
+        fill('white'); strokeWeight(0); textSize(15 * CameraMapSize);
+        text("CAM", cam1BXPos - 20 * CameraMapSize, cam1BYPos - 2.5 * CameraMapSize);
+        text("1B", cam1BXPos - 20 * CameraMapSize, cam1BYPos + 12.5 * CameraMapSize);
 
-    // CAM 7 Icon
-    fill(100);
-    stroke('white');
-    strokeWeight(2);
-    rect(300, 300, 45, 35);
-    fill('white');
-    strokeWeight(1);
-    textSize(15);
-    text("CAM", 280, 297.5);
-    text("7", 280, 312.5);
+        // CAM 1C
+        if (currentCamera === 1.2) {
+            fill(147, 180, 5);
+        } else {
+            fill(100);
+        }
+        stroke('white'); strokeWeight(2);
+        rect(cam1CXPos, cam1CYPos, 45 * CameraMapSize, 35 * CameraMapSize);
+        fill('white'); strokeWeight(0); textSize(15 * CameraMapSize);
+        text("CAM", cam1CXPos - 20 * CameraMapSize, cam1CYPos - 2.5 * CameraMapSize);
+        text("1C", cam1CXPos - 20 * CameraMapSize, cam1CYPos + 12.5 * CameraMapSize);
 
-    // CAM 1C Icon
-    fill(100);
-    stroke('white');
-    strokeWeight(2);
-    rect(300, 250, 45, 35);
-    fill('white');
-    strokeWeight(1);
-    textSize(15);
-    text("CAM", 280, 247.5);
-    text("1C", 280, 262.5);
+        // CAM 2A
+        if (currentCamera === 2.0) {
+            fill(147, 180, 5);
+        } else {
+            fill(100);
+        }
+        stroke('white'); strokeWeight(2);
+        rect(cam2AXPos, cam2AYPos, 45 * CameraMapSize, 35 * CameraMapSize);
+        fill('white'); strokeWeight(0); textSize(15 * CameraMapSize);
+        text("CAM", cam2AXPos - 20 * CameraMapSize, cam2AYPos - 2.5 * CameraMapSize);
+        text("2A", cam2AXPos - 20 * CameraMapSize, cam2AYPos + 12.5 * CameraMapSize);
 
-    // CAM 1B Icon
-    fill(100);
-    stroke('white');
-    strokeWeight(2);
-    rect(300, 200, 45, 35);
-    fill('white');
-    strokeWeight(1);
-    textSize(15);
-    text("CAM", 280, 197.5);
-    text("1B", 280, 212.5);
+        // CAM 2B
+        if (currentCamera === 2.1) {
+            fill(147, 180, 5);
+        } else {
+            fill(100);
+        }
+        stroke('white'); strokeWeight(2);
+        rect(cam2BXPos, cam2BYPos, 45 * CameraMapSize, 35 * CameraMapSize);
+        fill('white'); strokeWeight(0); textSize(15 * CameraMapSize);
+        text("CAM", cam2BXPos - 20 * CameraMapSize, cam2BYPos - 2.5 * CameraMapSize);
+        text("2B", cam2BXPos - 20 * CameraMapSize, cam2BYPos + 12.5 * CameraMapSize);
 
-    // CAM 1A Icon
-    fill(100);
-    stroke('white');
-    strokeWeight(2);
-    rect(400, 250, 45, 35);
-    fill('white');
-    strokeWeight(1);
-    textSize(15);
-    text("CAM", 380, 247.5);
-    text("1A", 380, 262.5);
+        // CAM 3
+        if (currentCamera === 3) {
+            fill(147, 180, 5);
+        } else {
+            fill(100);
+        }
+        stroke('white'); strokeWeight(2);
+        rect(cam3XPos, cam3YPos, 45 * CameraMapSize, 35 * CameraMapSize);
+        fill('white'); strokeWeight(0); textSize(15 * CameraMapSize);
+        text("CAM", cam3XPos - 20 * CameraMapSize, cam3YPos - 2.5 * CameraMapSize);
+        text("3", cam3XPos - 20 * CameraMapSize, cam3YPos + 12.5 * CameraMapSize);
 
-    // CAM 5 Icon
-    fill(100);
-    stroke('white');
-    strokeWeight(2);
-    rect(400, 300, 45, 35);
-    fill('white');
-    strokeWeight(1);
-    textSize(15);
-    text("CAM", 380, 297.5);
-    text("5", 380, 312.5);
+        // CAM 4A
+        if (currentCamera === 4.0) {
+            fill(147, 180, 5);
+        } else {
+            fill(100);
+        }
+        stroke('white'); strokeWeight(2);
+        rect(cam4AXPos, cam4AYPos, 45 * CameraMapSize, 35 * CameraMapSize);
+        fill('white'); strokeWeight(0); textSize(15 * CameraMapSize);
+        text("CAM", cam4AXPos - 20 * CameraMapSize, cam4AYPos - 2.5 * CameraMapSize);
+        text("4A", cam4AXPos - 20 * CameraMapSize, cam4AYPos + 12.5 * CameraMapSize);
+
+        // CAM 4B
+        if (currentCamera === 4.1) {
+            fill(147, 180, 5);
+        } else {
+            fill(100);
+        }
+        stroke('white'); strokeWeight(2);
+        rect(cam4BXPos, cam4BYPos, 45 * CameraMapSize, 35 * CameraMapSize);
+        fill('white'); strokeWeight(0); textSize(15 * CameraMapSize);
+        text("CAM", cam4BXPos - 20 * CameraMapSize, cam4BYPos - 2.5 * CameraMapSize);
+        text("4B", cam4BXPos - 20 * CameraMapSize, cam4BYPos + 12.5 * CameraMapSize);
+
+        // CAM 5
+        if (currentCamera === 5) {
+            fill(147, 180, 5);
+        } else {
+            fill(100);
+        }
+        stroke('white'); strokeWeight(2);
+        rect(cam5XPos, cam5YPos, 45 * CameraMapSize, 35 * CameraMapSize);
+        fill('white'); strokeWeight(0); textSize(15 * CameraMapSize);
+        text("CAM", cam5XPos - 20 * CameraMapSize, cam5YPos - 2.5 * CameraMapSize);
+        text("5", cam5XPos - 20 * CameraMapSize, cam5YPos + 12.5 * CameraMapSize);
+
+        // CAM 6
+        if (currentCamera === 6) {
+            fill(147, 180, 5);
+        } else {
+            fill(100);
+        }
+        stroke('white'); strokeWeight(2);
+        rect(cam6XPos, cam6YPos, 45 * CameraMapSize, 35 * CameraMapSize);
+        fill('white'); strokeWeight(0); textSize(15 * CameraMapSize);
+        text("CAM", cam6XPos - 20 * CameraMapSize, cam6YPos - 2.5 * CameraMapSize);
+        text("6", cam6XPos - 20 * CameraMapSize, cam6YPos + 12.5 * CameraMapSize);
+
+        // CAM 7
+        if (currentCamera === 7) {
+            fill(147, 180, 5);
+        } else {
+            fill(100);
+        }
+        stroke('white'); strokeWeight(2);
+        rect(cam7XPos, cam7YPos, 45 * CameraMapSize, 35 * CameraMapSize);
+        fill('white'); strokeWeight(0); textSize(15 * CameraMapSize);
+        text("CAM", cam7XPos - 20 * CameraMapSize, cam7YPos - 2.5 * CameraMapSize);
+        text("7", cam7XPos - 20 * CameraMapSize, cam7YPos + 12.5 * CameraMapSize);
+
+
+    }
+
+    if (screenCasting == true && currentCamera == 0) {
+
+        // Actual Monitor Screen
+        fill(10);
+        rect(170, 200, 300, 200);
+        fill('white');
+        textSize(30);
+        text("[No Video Feed]", 60, 200);
+        textSize(15);
+        text("Please, select a Camera!", 80, 220);
+    }
+
+    if (screenCasting == true && currentCamera == 1) {
+
+        // Actual Monitor Screen
+        fill(10);
+        rect(170, 200, 300, 200);
+        fill('white');
+        textSize(30);
+        text("1A", 155, 210);
+        textSize(15);
+    }
+
+    if (screenCasting == true && currentCamera == 1.1) {
+
+        // Actual Monitor Screen
+        fill(10);
+        rect(170, 200, 300, 200);
+        fill('white');
+        textSize(30);
+        text("1B", 155, 210);
+        textSize(15);
+    }
+
+    if (screenCasting == true && currentCamera == 1.2) {
+
+        // Actual Monitor Screen
+        fill(10);
+        rect(170, 200, 300, 200);
+        fill('white');
+        textSize(30);
+        text("1C", 155, 210);
+        textSize(15);
+    }
+
+    if (screenCasting == true && currentCamera == 5) {
+
+        // Actual Monitor Screen
+        fill(10);
+        rect(170, 200, 300, 200);
+        fill('white');
+        textSize(30);
+        text("5", 155, 210);
+        textSize(15);
+    }
+
+    if (screenCasting == true && currentCamera == 3) {
+
+        // Actual Monitor Screen
+        fill(10);
+        rect(170, 200, 300, 200);
+        fill('white');
+        textSize(30);
+        text("3", 155, 210);
+        textSize(15);
+    }
+
+
+    if (screenCasting == true && currentCamera == 2) {
+
+        // Actual Monitor Screen
+        fill(10);
+        rect(170, 200, 300, 200);
+        fill('white');
+        textSize(30);
+        text("2A", 155, 210);
+        textSize(15);
+    }
+
+    if (screenCasting == true && currentCamera == 2.1) {
+
+        // Actual Monitor Screen
+        fill(10);
+        rect(170, 200, 300, 200);
+        fill('white');
+        textSize(30);
+        text("2B", 155, 210);
+        textSize(15);
+    }
+
+    if (screenCasting == true && currentCamera == 4) {
+
+        // Actual Monitor Screen
+        fill(10);
+        rect(170, 200, 300, 200);
+        fill('white');
+        textSize(30);
+        text("4", 155, 210);
+        textSize(15);
+    }
+
+    if (screenCasting == true && currentCamera == 4.1) {
+
+        // Actual Monitor Screen
+        fill(10);
+        rect(170, 200, 300, 200);
+        fill('white');
+        textSize(30);
+        text("4B", 155, 210);
+        textSize(15);
+    }
+
+    if (screenCasting == true && currentCamera == 6) {
+
+        // Actual Monitor Screen
+        fill(10);
+        rect(170, 200, 300, 200);
+        fill('white');
+        textSize(30);
+        text("6", 155, 210);
+        textSize(15);
+    }
+
+
+    if (screenCasting == true && currentCamera == 7) {
+
+        // Actual Monitor Screen
+        fill(10);
+        rect(170, 200, 300, 200);
+        fill('white');
+        textSize(30);
+        text("7", 155, 210);
+        textSize(15);
+    }
 }
 
 
@@ -913,24 +1250,78 @@ function mouseClicked() {
 
     // Camera Button Detection
 
-    if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == false && tabletAvailable == true) {
+    if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == false && tabletAvailable == true && phoneGuyPickedUpOn == false) {
         tabletOpened = true;
     }
 
-    else if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == true && tabletAvailable == true) {
+    else if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == true && tabletAvailable == true && phoneGuyPickedUpOn == false) {
         tabletOpened = false;
     }
+
+    // Camera Map Button Detection
+
+    if (mouseX >= 402 && mouseX <= 429 && mouseY >= 280 && mouseY <= 300 && screenCasting == true) {
+        currentCamera = 2.1;
+        monitorSwitchSound.play();
+    }
+
+    else if (mouseX >= 402 && mouseX <= 429 && mouseY >= 256 && mouseY <= 277 && screenCasting == true) {
+        currentCamera = 2;
+        monitorSwitchSound.play();
+    }
+
+    else if (mouseX >= 472 && mouseX <= 498 && mouseY >= 256 && mouseY <= 278 && screenCasting == true) {
+        currentCamera = 4;
+        monitorSwitchSound.play();
+    }
+
+    else if (mouseX >= 472 && mouseX <= 498 && mouseY >= 280 && mouseY <= 300 && screenCasting == true) {
+        currentCamera = 4.1;
+        monitorSwitchSound.play();
+    }
+
+    else if (mouseX >= 357 && mouseX <= 383 && mouseY >= 242 && mouseY <= 263 && screenCasting == true) {
+        currentCamera = 3;
+        monitorSwitchSound.play();
+    }
+
+    else if (mouseX >= 367 && mouseX <= 394 && mouseY >= 180 && mouseY <= 199 && screenCasting == true) {
+        currentCamera = 1.2;
+        monitorSwitchSound.play();
+    }
+
+    else if (mouseX >= 327 && mouseX <= 354 && mouseY >= 139 && mouseY <= 160 && screenCasting == true) {
+        currentCamera = 5;
+        monitorSwitchSound.play();
+    }
+
+    else if (mouseX >= 382 && mouseX <= 408 && mouseY >= 125 && mouseY <= 145 && screenCasting == true) {
+        currentCamera = 1.1;
+        monitorSwitchSound.play();
+    }
+
+    else if (mouseX >= 407 && mouseX <= 433 && mouseY >= 92 && mouseY <= 112 && screenCasting == true) {
+        currentCamera = 1;
+        monitorSwitchSound.play();
+    }
+
+    else if (mouseX >= 554 && mouseX <= 581 && mouseY >= 147 && mouseY <= 167 && screenCasting == true) {
+        currentCamera = 7;
+        monitorSwitchSound.play();
+    }
+
+    else if (mouseX >= 537 && mouseX <= 565 && mouseY >= 239 && mouseY <= 259 && screenCasting == true) {
+        currentCamera = 6;
+        monitorSwitchSound.play();
+    }
+
+
 
 
 
 }
 
 function drawLeftDoor() {
-
-    // if (leftDoorClosed == true && leftDoorY >= 260) {
-    //     leftDoorY += 30;
-    //     leftDoorButtonAvailable = false;
-    // }
 
     if (leftDoorClosed == true && leftDoorY < 300) {
         leftDoorY += 40;
@@ -941,19 +1332,18 @@ function drawLeftDoor() {
         leftDoorButtonAvailable = true;
     }
 
-    if (leftDoorClosed == false && leftDoorY > 10) {
+    if (leftDoorClosed == false && leftDoorY > 0) {
         leftDoorY -= 40;
         leftDoorButtonAvailable = false;
     }
 
-    if (leftDoorClosed == false && leftDoorY == 10) {
+    if (leftDoorClosed == false && leftDoorY == 0) {
         leftDoorButtonAvailable = true;
     }
 
     strokeWeight(1);
     stroke(0);
     fill(150);
-    // rect(80, leftDoorY, 75, 360);
     push();
     rotate(radians(-2.5));
     noStroke();
@@ -972,19 +1362,18 @@ function drawRightDoor() {
         rightDoorButtonAvailable = true;
     }
 
-    if (rightDoorClosed == false && rightDoorY > 10) {
+    if (rightDoorClosed == false && rightDoorY > 0) {
         rightDoorY -= 40;
         rightDoorButtonAvailable = false;
     }
 
-    if (rightDoorClosed == false && rightDoorY == 10) {
+    if (rightDoorClosed == false && rightDoorY == 0) {
         rightDoorButtonAvailable = true;
     }
 
     strokeWeight(1);
     stroke(0);
     fill(150);
-    // rect(80, leftDoorY, 75, 360);
     push();
     rotate(radians(2.5));
     noStroke();
@@ -1314,4 +1703,24 @@ function drawPhoneGuyDialogueUI() {
     }
 }
 
+function keyPressed() {
+    if (key === 'b' && gameBegan == true) {
+        fnafCutScream.play();
+        bonnieScare = true;
+    }
+}
 
+function drawBonnieScare() {
+    if (bonnieScare == true && bonnieScareTime < 500) {
+        image(bonnieAngry, 300, 200, bonnieScareSize, bonnieScareSize);
+        bonnieScareSize += 250
+        bonnieScareTime += 100
+    }
+
+    if (bonnieScareTime == 500) {
+        bonnieScare = false;
+        bonnieScareTime = 0;
+        bonnieScareSize = 1;
+        gameBegan = false;
+    }
+}
