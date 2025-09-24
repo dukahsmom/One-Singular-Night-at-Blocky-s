@@ -228,7 +228,7 @@ let rightLightSoundPlayed = false;
 // Animatronic Design Variables
 
 // Blocky
-let freddyX = 100;
+let freddyX = 125;
 let freddyY = 50;
 let freddySize = 0.5;
 
@@ -2047,7 +2047,6 @@ function bonnieLogic() {
 function drawBlocky() {
     // Blocky (Freddy)
     push();
-    // Movement for Freddy
     translate(freddyX, freddyY)
 
     // Body
@@ -2152,7 +2151,7 @@ function drawBlocky() {
     pop();
 
     // Legs
-    ellipse(250 * freddySize, 270 * freddySize, 30 * freddySize, 100 * freddySize);
-    ellipse(200 * freddySize, 270 * freddySize, 30 * freddySize, 100 * freddySize);
+    ellipse(400 * freddySize, 535 * freddySize, 50 * freddySize, 200 * freddySize);
+    ellipse(500 * freddySize, 535 * freddySize, 50 * freddySize, 200 * freddySize);
     pop();
 }
