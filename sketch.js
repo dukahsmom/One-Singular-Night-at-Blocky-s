@@ -225,6 +225,13 @@ let leftLightSoundPlayed = false;
 let rightLightActivated = false;
 let rightLightSoundPlayed = false;
 
+// Animatronic Design Variables
+
+// Blocky
+let freddyX = 100;
+let freddyY = 50;
+let freddySize = 0.5;
+
 function preload() {
     FanBlades = loadImage("img/Fan Spinning.gif");
     camMapReference = loadImage("img/CameraMap.jpg");
@@ -260,12 +267,17 @@ function setup() {
 }
 
 function draw() {
-    background(0);
+    background(250);
 
-    drawMainMenu();
+    // drawMainMenu();
     // gameStarted();
 
     mouseDebug();
+
+    drawBlocky();
+    textSize(15);
+    fill('black');
+    text("Currently in: Design Workspace", 150, 50);
 }
 
 // function drawMainMenu() {
@@ -2030,4 +2042,117 @@ function bonnieLogic() {
         bonnieCamPosition = 1;
         bonnieInOffice = false;
     }
+}
+
+function drawBlocky() {
+    // Blocky (Freddy)
+    push();
+    // Movement for Freddy
+    translate(freddyX, freddyY)
+
+    // Body
+    strokeWeight(1);
+    fill(161, 97, 42);
+    rect(450 * freddySize, 300 * freddySize, 200 * freddySize, 400 * freddySize);
+
+    // Hat
+    fill(30)
+    rect(450 * freddySize, 90 * freddySize, 150 * freddySize, 20 * freddySize);
+    rect(450 * freddySize, 50 * freddySize, 100 * freddySize, 60 * freddySize);
+
+    // Eyes
+
+    fill('white');
+    ellipse(400 * freddySize, 185 * freddySize, 70 * freddySize, 70 * freddySize);
+    ellipse(500 * freddySize, 185 * freddySize, 70 * freddySize, 70 * freddySize);
+    fill(130, 160, 212);
+    ellipse(500 * freddySize, 185 * freddySize, 40 * freddySize, 40 * freddySize);
+    ellipse(400 * freddySize, 185 * freddySize, 40 * freddySize, 40 * freddySize);
+    fill(3, 7, 3);
+    ellipse(500 * freddySize, 185 * freddySize, 20 * freddySize, 20 * freddySize);
+    ellipse(400 * freddySize, 185 * freddySize, 20 * freddySize, 20 * freddySize);
+    fill('black');
+    arc(400 * freddySize, 175 * freddySize, 65 * freddySize, 50 * freddySize, 3.14, 6.28); // Uses Pi and Pi * 2 to make even arc
+    arc(500 * freddySize, 175 * freddySize, 65 * freddySize, 50 * freddySize, 3.14, 6.28); // Uses Pi and Pi * 2 to make even arc
+
+
+
+
+    // Eyebrows
+    strokeWeight(20 * freddySize);
+    line(370 * freddySize, 130 * freddySize, 430 * freddySize, 130 * freddySize);
+    line(470 * freddySize, 130 * freddySize, 530 * freddySize, 130 * freddySize);
+
+    // Mouth
+    strokeWeight(1 * freddySize);
+    rect(450 * freddySize, 285 * freddySize, 100 * freddySize, 50 * freddySize);
+    fill('white');
+    rect(410 * freddySize, 302.5 * freddySize, 15 * freddySize, 15 * freddySize);
+    rect(430 * freddySize, 302.5 * freddySize, 15 * freddySize, 15 * freddySize);
+    rect(450 * freddySize, 302.5 * freddySize, 15 * freddySize, 15 * freddySize);
+    rect(470 * freddySize, 302.5 * freddySize, 15 * freddySize, 15 * freddySize);
+    rect(490 * freddySize, 302.5 * freddySize, 15 * freddySize, 15 * freddySize);
+
+    // Nose
+    fill(174, 108, 50);
+    ellipse(450 * freddySize, 260 * freddySize, 150 * freddySize, 70 * freddySize);
+    fill('black');
+    ellipse(450 * freddySize, 235 * freddySize, 50 * freddySize, 25 * freddySize);
+    strokeWeight(3);
+    line(450 * freddySize, 235 * freddySize, 450 * freddySize, 294 * freddySize);
+    strokeWeight(1);
+    ellipse(490 * freddySize, 255 * freddySize, 10 * freddySize, 10 * freddySize);
+    ellipse(510 * freddySize, 250 * freddySize, 10 * freddySize, 10 * freddySize);
+    ellipse(505 * freddySize, 270 * freddySize, 10 * freddySize, 10 * freddySize);
+    fill('black');
+    ellipse(410 * freddySize, 255 * freddySize, 10 * freddySize, 10 * freddySize);
+    ellipse(390 * freddySize, 250 * freddySize, 10 * freddySize, 10 * freddySize);
+    ellipse(395 * freddySize, 270 * freddySize, 10 * freddySize, 10 * freddySize);
+
+    // Tie
+
+    ellipse(450 * freddySize, 350 * freddySize, 30 * freddySize, 30 * freddySize);
+    triangle(450 * freddySize, 350 * freddySize, 400 * freddySize, 370 * freddySize, 400 * freddySize, 330 * freddySize);
+    triangle(450 * freddySize, 350 * freddySize, 500 * freddySize, 370 * freddySize, 500 * freddySize, 330 * freddySize);
+
+    // Ears
+    fill(170);
+    push();
+    translate(340 * freddySize, 100 * freddySize); // Moves the origin to 340,110
+    rotate(radians(30)); // Rotates the rectangle below by 30 degrees
+    rect(0, 0, 40 * freddySize, 20 * freddySize); // Rectangle is at 0,0 because the origin is where the rectangles positon should be
+    pop();
+    fill(157, 93, 49);
+    ellipse(310 * freddySize, 80 * freddySize, 60 * freddySize, 60 * freddySize);
+    fill(101, 53, 14);
+    ellipse(310 * freddySize, 80 * freddySize, 40 * freddySize, 40 * freddySize);
+
+    fill(170);
+    push(); // Seperates it from the rest of code so no rotation to it
+    translate(560 * freddySize, 100 * freddySize); // Moves the origin to 340,110
+    rotate(radians(150)); // Rotates the rectangle below by 30 degrees
+    rect(0, 0, 40 * freddySize, 20 * freddySize); // Rectangle is at 0,0 because the origin is where the rectangles positon should be
+    pop();  // Seperates it from the rest of code so no rotation to it
+    fill(157, 93, 49);
+    ellipse(590 * freddySize, 80 * freddySize, 60 * freddySize, 60 * freddySize);
+    fill(101, 53, 14);
+    ellipse(590 * freddySize, 80 * freddySize, 40 * freddySize, 40 * freddySize);
+
+    // Arms
+    fill(161, 97, 42);
+    push();
+    translate(330 * freddySize, 340 * freddySize);
+    rotate(radians(10));
+    ellipse(0, 0, 50 * freddySize, 200 * freddySize);
+    pop();
+    push();
+    translate(570 * freddySize, 340 * freddySize);
+    rotate(radians(-10));
+    ellipse(0, 0, 50 * freddySize, 200 * freddySize);
+    pop();
+
+    // Legs
+    ellipse(250 * freddySize, 270 * freddySize, 30 * freddySize, 100 * freddySize);
+    ellipse(200 * freddySize, 270 * freddySize, 30 * freddySize, 100 * freddySize);
+    pop();
 }
