@@ -165,6 +165,18 @@ let goldenFreddyDuration = 0;
 let goldenFreddyDurationSetCooldown = false;
 let goldenFreddyStareDurationSetCooldown = false;
 
+// Bonnie Variables
+let bonnieCamPosition = 1;
+let bonnieInOffice = false;
+let bonnieReady = false;
+let bonniePath = 0;
+
+// Chica Variables
+let chicaCamPosition = 11
+let chicaInOffice = false;
+let chicaReady = false;
+let chicaPath = 0;
+
 // X Positions for Icons
 let cam1AXPos = 420;
 let cam1BXPos = 395;
@@ -250,8 +262,8 @@ function setup() {
 function draw() {
     background(0);
 
-    // drawMainMenu();
-    gameStarted();
+    drawMainMenu();
+    // gameStarted();
 
     mouseDebug();
 }
@@ -781,6 +793,7 @@ function gameStarted() {
     freddyLogic();
     foxyLogic();
     goldenFreddyLogic();
+    bonnieLogic();
 }
 
 function mouseDebug() {
@@ -1095,6 +1108,10 @@ function drawCameraScreen() {
         if (freddyCamPosition == currentCamera) {
             text("Freddy is Here", 125, 230);
         }
+
+        if (bonnieCamPosition == currentCamera) {
+            text("Bonnie is Here", 125, 270);
+        }
     }
 
 
@@ -1110,6 +1127,10 @@ function drawCameraScreen() {
         if (freddyCamPosition == currentCamera) {
             text("Freddy is Here", 125, 230);
         }
+
+        if (bonnieCamPosition == currentCamera) {
+            text("Bonnie is Here", 125, 270);
+        }
     }
 
     if (screenCasting == true && currentCamera == 1.2) {
@@ -1121,12 +1142,12 @@ function drawCameraScreen() {
         text("1C", 155, 210);
         textSize(15);
 
-        if (freddyCamPosition == currentCamera) {
-            text("Freddy is Here", 125, 230);
-        }
-
         if (foxyCamPosition == currentCamera) {
             text("Foxy is here", 125, 250)
+        }
+
+        if (bonnieCamPosition == currentCamera) {
+            text("Bonnie is Here", 125, 270);
         }
     }
 
@@ -1148,6 +1169,10 @@ function drawCameraScreen() {
         textSize(30);
         text("3", 155, 210);
         textSize(15);
+
+        if (bonnieCamPosition == currentCamera) {
+            text("Bonnie is Here", 125, 270);
+        }
     }
 
 
@@ -1163,6 +1188,10 @@ function drawCameraScreen() {
         if (foxyCamPosition == currentCamera) {
             text("Foxy is here", 125, 250)
         }
+
+        if (bonnieCamPosition == currentCamera) {
+            text("Bonnie is Here", 125, 270);
+        }
     }
 
     if (screenCasting == true && currentCamera == 2.1) {
@@ -1177,6 +1206,10 @@ function drawCameraScreen() {
         if (freddyCamPosition == 2.1) {
             text("Freddy is Here", 125, 230);
         }
+
+        if (bonnieCamPosition == currentCamera) {
+            text("Bonnie is Here", 125, 270);
+        }
     }
 
     if (screenCasting == true && currentCamera == 4) {
@@ -1188,6 +1221,10 @@ function drawCameraScreen() {
         textSize(30);
         text("4", 155, 210);
         textSize(15);
+
+        if (freddyCamPosition == currentCamera) {
+            text("Freddy is Here", 125, 230);
+        }
     }
 
     if (screenCasting == true && currentCamera == 4.1) {
@@ -1199,6 +1236,10 @@ function drawCameraScreen() {
         textSize(30);
         text("4B", 155, 210);
         textSize(15);
+
+        if (freddyCamPosition == currentCamera) {
+            text("Freddy is Here", 125, 230);
+        }
     }
 
     if (screenCasting == true && currentCamera == 6) {
@@ -1210,6 +1251,10 @@ function drawCameraScreen() {
         textSize(30);
         text("6", 155, 210);
         textSize(15);
+
+        if (freddyCamPosition == currentCamera) {
+            text("Freddy is Here", 125, 230);
+        }
     }
 
 
@@ -1222,6 +1267,10 @@ function drawCameraScreen() {
         textSize(30);
         text("7", 155, 210);
         textSize(15);
+
+        if (freddyCamPosition == currentCamera) {
+            text("Freddy is Here", 125, 230);
+        }
     }
 }
 
@@ -1321,11 +1370,11 @@ function mouseClicked() {
 
     // Camera Button Detection
 
-    if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == false && tabletAvailable == true && phoneGuyPickedUpOn == false) {
+    if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == false && tabletAvailable == true && phoneGuyPickedUpOn == true) {
         tabletOpened = true;
     }
 
-    else if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == true && tabletAvailable == true && phoneGuyPickedUpOn == false) {
+    else if (mouseX >= 120 && mouseX <= 475 && mouseY >= 360 && mouseY <= 395 && tabletOpened == true && tabletAvailable == true && phoneGuyPickedUpOn == true) {
         tabletOpened = false;
     }
 
@@ -1791,6 +1840,10 @@ function keyPressed() {
     if (key === 'g') {
         goldenFreddySpawned = true;
     }
+
+    if (key === 'k') {
+        bonnieReady = true;
+    }
 }
 
 function drawBonnieScare() {
@@ -1815,16 +1868,30 @@ function freddyLogic() {
     }
 
     if (freddyCamPosition == 1.1 && readyFreddy == true) {
-        freddyCamPosition = 1.2;
+        freddyCamPosition = 7;
         readyFreddy = false;
     }
 
-    if (freddyCamPosition == 1.2 && readyFreddy == true && leftDoorClosed == false) {
+    if (freddyCamPosition == 7 && readyFreddy == true) {
+        freddyCamPosition = 6;
+        readyFreddy = false;
+    }
+
+    if (freddyCamPosition == 6 && readyFreddy == true && leftDoorClosed == false) {
+        freddyCamPosition = 4;
+    }
+
+    if (freddyCamPosition == 4 && readyFreddy == true) {
+        freddyCamPosition = 4.1;
+        readyFreddy = false;
+    }
+
+    if (freddyCamPosition == 4.1 && readyFreddy == true && leftDoorClosed == false) {
         freddyCamPosition = 0;
         freddyInOffice = true;
     }
 
-    if (freddyCamPosition == 1.2 && readyFreddy == true && leftDoorClosed == true) {
+    if (freddyCamPosition == 4.1 && readyFreddy == true && leftDoorClosed == true) {
         freddyCamPosition = 1;
         readyFreddy = false;
         print("Freddy: Bum");
@@ -1886,7 +1953,6 @@ function foxyLogic() {
 }
 
 
-// Finish this
 function goldenFreddyLogic() {
 
     if (goldenFreddySpawned == true && goldenFreddyDurationSetCooldown == false) {
@@ -1896,29 +1962,72 @@ function goldenFreddyLogic() {
 
     if (goldenFreddySpawned == true) {
         goldenFreddyDuration -= 5
-        print(goldenFreddyDuration)
+        // print(goldenFreddyDuration)
     }
 
-    if (goldenFreddySpawned == true && goldenFreddyStareDurationSetCooldown && monitorOpen == false) {
-        goldenFreddyStareDuration = 200;
+    if (goldenFreddySpawned == true && goldenFreddyStareDurationSetCooldown == false) {
+        goldenFreddyStareDuration = 300;
         goldenFreddyStareDurationSetCooldown = true;
         print(goldenFreddyStareDuration)
     }
 
-    if (goldenFreddySpawned == true)
-    goldenFreddyStareDuration -= 5;
+    if (goldenFreddySpawned == true && tabletOpened == false) {
+        goldenFreddyStareDuration -= 2.5;
+        print(goldenFreddyStareDuration);
+    }
 
-    if (goldenFreddyStareDuration < 1 && goldenFreddySpawned == true) {
-        print("*Golden Freddy Scream*")
+    if (goldenFreddyStareDuration < 10 && goldenFreddySpawned == true) {
+        // print("*Golden Freddy Scream*")
+        print(goldenFreddyStareDuration);
+        goldenFreddySpawned = false;
     }
 
     if (goldenFreddyDuration < 10 && goldenFreddySpawned == true) {
-        print("*Golden Freddy go no scream")
+        // print("*Golden Freddy go no scream")
         goldenFreddySpawned = false;
     }
 
     if (goldenFreddySpawned == false) {
         goldenFreddyDurationSetCooldown = false;
+        goldenFreddyStareDurationSetCooldown = false;
         goldenFreddyStareDuration = 0;
+    }
+}
+
+function bonnieLogic() {
+    if (bonnieCamPosition == 1 && bonnieReady == true) {
+        bonnieCamPosition = 1.1;
+        bonnieReady = false;
+    }
+
+    if (bonnieCamPosition == 1.1 && bonnieReady == true) {
+        bonnieCamPosition = 1.2;
+        bonnieReady = false;
+    }
+
+    if (bonnieCamPosition == 1.2 && bonnieReady == true) {
+        bonnieCamPosition = 2;
+        bonnieReady = false;
+    }
+
+    if (bonnieCamPosition == 2 && bonnieReady == true && leftDoorClosed == false) {
+        bonnieCamPosition = 2.1;
+    }
+
+    if (bonnieCamPosition == 2.1 && bonnieReady == true && leftDoorClosed == false) {
+        bonnieCamPosition = 0;
+        bonnieInOffice = true;
+    }
+
+    if (bonnieCamPosition == 2.1 && bonnieReady == true && leftDoorClosed == true) {
+        bonnieCamPosition = 1;
+        bonnieReady = false;
+        print("Bonnie: Bum");
+    }
+
+    if (bonnieInOffice == true) {
+        print("*Bonnie Jumpscare");
+        bonnieCamPosition = 1;
+        bonnieInOffice = false;
     }
 }
