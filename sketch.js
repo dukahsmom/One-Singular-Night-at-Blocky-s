@@ -176,6 +176,7 @@ let chicaCamPosition = 11
 let chicaInOffice = false;
 let chicaReady = false;
 let chicaPath = 0;
+let chicaConfettiColor = ['pink', 'blue', 'yellow', 'orange'];
 
 // X Positions for Icons
 let cam1AXPos = 420;
@@ -228,9 +229,28 @@ let rightLightSoundPlayed = false;
 // Animatronic Design Variables
 
 // Blocky
-let freddyX = 125;
-let freddyY = 50;
 let freddySize = 0.5;
+let freddyX = -30;
+let freddyY = 30;
+
+let freddyX2 = 200;
+let freddyY2 = 30;
+
+// Blunny
+let bonnieSize = 0.5;
+let bonnieX = -30;
+let bonnieY = 50;
+
+// Blocky Chicken
+let chicaSize = 0.5;
+let chicaX = -30;
+let chicaY = 50;
+
+// Blocxy
+let foxySize = 0.5;
+let foxyX = -30
+let foxyY = 50;
+
 
 function preload() {
     FanBlades = loadImage("img/Fan Spinning.gif");
@@ -267,17 +287,16 @@ function setup() {
 }
 
 function draw() {
-    background(250);
+    background(255);
 
     // drawMainMenu();
     // gameStarted();
 
-    mouseDebug();
+    // mouseDebug();
 
-    drawBlocky();
-    textSize(15);
-    fill('black');
-    text("Currently in: Design Workspace", 150, 50);
+    drawFoxy();
+
+    mouseDebug();
 }
 
 // function drawMainMenu() {
@@ -292,106 +311,7 @@ function drawMainMenu() {
 
         // Blocky (Freddy)
 
-        // Body
-        strokeWeight(1);
-        fill(161, 97, 42);
-        rect(450, 300, 200, 400);
-
-        // Hat
-        fill(30)
-        rect(450, 90, 150, 20);
-        rect(450, 50, 100, 60);
-
-        // Eyes
-
-        fill('white');
-        ellipse(400, 185, 70, 70);
-        ellipse(500, 185, 70, 70);
-        fill(130, 160, 212);
-        ellipse(500, 185, 40, 40);
-        ellipse(400, 185, 40, 40);
-        fill(3, 7, 3);
-        ellipse(500, 185, 20, 20);
-        ellipse(400, 185, 20, 20);
-        fill('black');
-        arc(400, 175, 65, 50, 3.14, 6.28); // Uses Pi and Pi * 2 to make even arc
-        arc(500, 175, 65, 50, 3.14, 6.28); // Uses Pi and Pi * 2 to make even arc
-
-
-
-
-        // Eyebrows
-        strokeWeight(20);
-        line(370, 130, 430, 130);
-        line(470, 130, 530, 130);
-
-        // Mouth
-        strokeWeight(1);
-        rect(450, 285, 100, 50);
-        fill('white');
-        rect(410, 302.5, 15, 15);
-        rect(430, 302.5, 15, 15);
-        rect(450, 302.5, 15, 15);
-        rect(470, 302.5, 15, 15);
-        rect(490, 302.5, 15, 15);
-
-        // Nose
-        fill(174, 108, 50);
-        ellipse(450, 260, 150, 70);
-        fill('black');
-        ellipse(450, 235, 50, 25);
-        strokeWeight(3);
-        line(450, 235, 450, 294);
-        strokeWeight(1);
-        ellipse(490, 255, 10, 10);
-        ellipse(510, 250, 10, 10);
-        ellipse(505, 270, 10, 10);
-        fill('black');
-        ellipse(410, 255, 10, 10);
-        ellipse(390, 250, 10, 10);
-        ellipse(395, 270, 10, 10);
-
-        // Tie
-
-        ellipse(450, 350, 30, 30);
-        rect(420, 350, 40, 25);
-        rect(480, 350, 40, 25);
-
-        // Ears
-        fill(170);
-        push();
-        translate(340, 100); // Moves the origin to 340,110
-        rotate(radians(30)); // Rotates the rectangle below by 30 degrees
-        rect(0, 0, 40, 20); // Rectangle is at 0,0 because the origin is where the rectangles positon should be
-        pop();
-        fill(157, 93, 49);
-        ellipse(310, 80, 60, 60);
-        fill(101, 53, 14);
-        ellipse(310, 80, 40, 40);
-
-        fill(170);
-        push(); // Seperates it from the rest of code so no rotation to it
-        translate(560, 100); // Moves the origin to 340,110
-        rotate(radians(150)); // Rotates the rectangle below by 30 degrees
-        rect(0, 0, 40, 20); // Rectangle is at 0,0 because the origin is where the rectangles positon should be
-        pop();  // Seperates it from the rest of code so no rotation to it
-        fill(157, 93, 49);
-        ellipse(590, 80, 60, 60);
-        fill(101, 53, 14);
-        ellipse(590, 80, 40, 40);
-
-        // Arms
-        fill(161, 97, 42);
-        push();
-        translate(330, 340);
-        rotate(radians(10));
-        ellipse(0, 0, 50, 200);
-        pop();
-        push();
-        translate(570, 340);
-        rotate(radians(-10));
-        ellipse(0, 0, 50, 200);
-        pop();
+        drawBlocky();
 
         // Static
         for (let index = 0; index < 150; index += 1) {
@@ -1889,7 +1809,7 @@ function freddyLogic() {
         readyFreddy = false;
     }
 
-    if (freddyCamPosition == 6 && readyFreddy == true && leftDoorClosed == false) {
+    if (freddyCamPosition == 6 && readyFreddy == true && rightDoorClosed == false) {
         freddyCamPosition = 4;
     }
 
@@ -1898,12 +1818,12 @@ function freddyLogic() {
         readyFreddy = false;
     }
 
-    if (freddyCamPosition == 4.1 && readyFreddy == true && leftDoorClosed == false) {
+    if (freddyCamPosition == 4.1 && readyFreddy == true && rightDoorClosed == false) {
         freddyCamPosition = 0;
         freddyInOffice = true;
     }
 
-    if (freddyCamPosition == 4.1 && readyFreddy == true && leftDoorClosed == true) {
+    if (freddyCamPosition == 4.1 && readyFreddy == true && rightDoorClosed == true) {
         freddyCamPosition = 1;
         readyFreddy = false;
         print("Freddy: Bum");
@@ -2154,4 +2074,423 @@ function drawBlocky() {
     ellipse(400 * freddySize, 535 * freddySize, 50 * freddySize, 200 * freddySize);
     ellipse(500 * freddySize, 535 * freddySize, 50 * freddySize, 200 * freddySize);
     pop();
+}
+
+
+
+function drawBlockySideView() {
+    // Blocky (Freddy)
+    push();
+    translate(freddyX2, freddyY2)
+
+    // Tie
+    fill('black');
+    ellipse(500 * freddySize, 350 * freddySize, 30 * freddySize, 30 * freddySize);
+    rect(507.5 * freddySize, 350 * freddySize, 5 * freddySize, 50 * freddySize);
+
+    // Body
+    strokeWeight(1);
+    fill(161, 97, 42);
+    rect(450 * freddySize, 300 * freddySize, 100 * freddySize, 400 * freddySize);
+
+    // Hat
+    fill(30)
+    rect(450 * freddySize, 90 * freddySize, 150 * freddySize, 20 * freddySize);
+    rect(450 * freddySize, 50 * freddySize, 100 * freddySize, 60 * freddySize);
+
+    // Eyes
+
+    fill('white');
+    ellipse(500 * freddySize, 185 * freddySize, 40 * freddySize, 70 * freddySize);
+    fill(130, 160, 212);
+    ellipse(505 * freddySize, 185 * freddySize, 25 * freddySize, 40 * freddySize);
+    fill(3, 7, 3);
+    ellipse(510 * freddySize, 185 * freddySize, 20 * freddySize, 20 * freddySize);
+    fill('black');
+    arc(500 * freddySize, 175 * freddySize, 40 * freddySize, 50 * freddySize, 3.14, 6.28); // Uses Pi and Pi * 2 to make even arc
+
+
+    // Eyebrows
+    strokeWeight(20 * freddySize);
+    line(485 * freddySize, 130 * freddySize, 490 * freddySize, 130 * freddySize);
+
+    // Mouth
+    strokeWeight(1 * freddySize);
+    rect(500 * freddySize, 285 * freddySize, 10 * freddySize, 50 * freddySize);
+    fill('white');
+    rect(500 * freddySize, 302.5 * freddySize, 15 * freddySize, 15 * freddySize);
+
+    // Nose
+    fill(174, 108, 50);
+    ellipse(515 * freddySize, 260 * freddySize, 50 * freddySize, 70 * freddySize);
+    fill('black');
+    ellipse(510 * freddySize, 230 * freddySize, 30 * freddySize, 15 * freddySize);
+    strokeWeight(1);
+    fill('black');
+    ellipse(535 * freddySize, 270 * freddySize, 10 * freddySize, 10 * freddySize);
+    ellipse(535 * freddySize, 250 * freddySize, 10 * freddySize, 10 * freddySize);
+    ellipse(530 * freddySize, 240 * freddySize, 10 * freddySize, 10 * freddySize);
+
+
+    // Ears
+    fill(157, 93, 49);
+    ellipse(450 * freddySize, 90 * freddySize, 30 * freddySize, 60 * freddySize);
+    fill(101, 53, 14);
+    ellipse(460 * freddySize, 90 * freddySize, 5 * freddySize, 40 * freddySize);
+
+
+
+    // Legs
+    fill(161, 97, 42);
+    ellipse(450 * freddySize, 535 * freddySize, 50 * freddySize, 200 * freddySize);
+
+    // Arms
+    fill(161, 97, 42);
+    ellipse(450 * freddySize, 350 * freddySize, 50 * freddySize, 200 * freddySize);
+}
+
+function drawBonnie() {
+    // Blunny (Bonnie)
+    push();
+    translate(bonnieX, bonnieY)
+
+    // Ears
+    fill(170);
+    rect(380 * bonnieSize, 80 * bonnieSize, 20 * bonnieSize, 40 * bonnieSize);
+    rect(380 * bonnieSize, 5 * bonnieSize, 20 * bonnieSize, 40 * bonnieSize);
+    fill(71, 56, 114);
+    ellipse(380 * bonnieSize, 40 * bonnieSize, 60 * bonnieSize, 90 * bonnieSize);
+    fill(102, 88, 106);
+    ellipse(380 * bonnieSize, 40 * bonnieSize, 40 * bonnieSize, 70 * bonnieSize);
+    fill(71, 56, 114);
+    ellipse(380 * bonnieSize, -45 * bonnieSize, 60 * bonnieSize, 70 * bonnieSize);
+    fill(102, 88, 106);
+    ellipse(380 * bonnieSize, -45 * bonnieSize, 40 * bonnieSize, 50 * bonnieSize);
+
+    fill(170);
+    rect(510 * bonnieSize, 80 * bonnieSize, 20 * bonnieSize, 40 * bonnieSize);
+    rect(510 * bonnieSize, 5 * bonnieSize, 20 * bonnieSize, 40 * bonnieSize);
+    fill(71, 56, 114);
+    ellipse(510 * bonnieSize, 40 * bonnieSize, 60 * bonnieSize, 90 * bonnieSize);
+    fill(102, 88, 106);
+    ellipse(510 * bonnieSize, 40 * bonnieSize, 40 * bonnieSize, 70 * bonnieSize);
+    fill(71, 56, 114);
+    ellipse(510 * bonnieSize, -45 * bonnieSize, 60 * bonnieSize, 70 * bonnieSize);
+    fill(102, 88, 106);
+    ellipse(510 * bonnieSize, -45 * bonnieSize, 40 * bonnieSize, 50 * bonnieSize);
+
+    // Body
+    strokeWeight(1);
+    fill(71, 56, 114);
+    rect(450 * bonnieSize, 300 * bonnieSize, 200 * bonnieSize, 400 * bonnieSize);
+
+    // Belly
+    fill(127, 121, 146);
+    ellipse(225, 200, 60, 80);
+
+    // Eyes
+    fill('white');
+    ellipse(400 * bonnieSize, 185 * bonnieSize, 70 * bonnieSize, 70 * bonnieSize);
+    ellipse(500 * bonnieSize, 185 * bonnieSize, 70 * bonnieSize, 70 * bonnieSize);
+    fill(174, 61, 83);
+    ellipse(500 * bonnieSize, 185 * bonnieSize, 40 * bonnieSize, 40 * bonnieSize);
+    ellipse(400 * bonnieSize, 185 * bonnieSize, 40 * bonnieSize, 40 * bonnieSize);
+    fill(3, 7, 3);
+    ellipse(500 * bonnieSize, 185 * bonnieSize, 20 * bonnieSize, 20 * bonnieSize);
+    ellipse(400 * bonnieSize, 185 * bonnieSize, 20 * bonnieSize, 20 * bonnieSize);
+    fill('black');
+    arc(400 * bonnieSize, 175 * bonnieSize, 65 * bonnieSize, 50 * bonnieSize, 3.14, 6.28);
+    arc(500 * bonnieSize, 175 * bonnieSize, 65 * bonnieSize, 50 * bonnieSize, 3.14, 6.28);
+
+    // Mouth
+    strokeWeight(1 * bonnieSize);
+    rect(450 * bonnieSize, 285 * bonnieSize, 100 * bonnieSize, 50 * bonnieSize);
+    fill('white');
+    rect(410 * bonnieSize, 302.5 * bonnieSize, 15 * bonnieSize, 15 * bonnieSize);
+    rect(430 * bonnieSize, 302.5 * bonnieSize, 15 * bonnieSize, 15 * bonnieSize);
+    rect(450 * bonnieSize, 302.5 * bonnieSize, 15 * bonnieSize, 15 * bonnieSize);
+    rect(470 * bonnieSize, 302.5 * bonnieSize, 15 * bonnieSize, 15 * bonnieSize);
+    rect(490 * bonnieSize, 302.5 * bonnieSize, 15 * bonnieSize, 15 * bonnieSize);
+
+    // Nose
+    fill(71, 56, 114);
+    ellipse(450 * bonnieSize, 260 * bonnieSize, 150 * bonnieSize, 70 * bonnieSize);
+    fill('black');
+    ellipse(450 * bonnieSize, 235 * bonnieSize, 50 * bonnieSize, 25 * bonnieSize);
+
+    // Tie
+    fill(114, 1, 1);
+    noStroke();
+    ellipse(450 * bonnieSize, 330 * bonnieSize, 30 * bonnieSize, 30 * bonnieSize);
+    triangle(450 * bonnieSize, 330 * bonnieSize, 400 * bonnieSize, 355 * bonnieSize, 400 * bonnieSize, 315 * bonnieSize);
+    triangle(450 * bonnieSize, 330 * bonnieSize, 500 * bonnieSize, 355 * bonnieSize, 500 * bonnieSize, 315 * bonnieSize);
+    stroke(0);
+
+    // Arms
+    fill(71, 56, 114);
+    push();
+    translate(330 * bonnieSize, 340 * bonnieSize);
+    rotate(radians(10));
+    ellipse(0, 0, 50 * bonnieSize, 200 * bonnieSize);
+    pop();
+    push();
+    translate(570 * bonnieSize, 340 * bonnieSize);
+    rotate(radians(-10));
+    ellipse(0, 0, 50 * bonnieSize, 200 * bonnieSize);
+    pop();
+
+    // Legs
+    ellipse(400 * bonnieSize, 535 * bonnieSize, 50 * bonnieSize, 200 * bonnieSize);
+    ellipse(500 * bonnieSize, 535 * bonnieSize, 50 * bonnieSize, 200 * bonnieSize);
+    pop();
+}
+
+function drawChica() {
+    // Blocky Chicken (Chica)
+    push();
+    translate(chicaX, chicaY)
+
+    // Hair
+
+    fill(200, 160, 10);
+    noStroke();
+    triangle(425 * chicaSize, 100 * chicaSize, 475 * chicaSize, 100 * chicaSize, 450 * chicaSize, 30 * chicaSize);
+    triangle(425 * chicaSize, 100 * chicaSize, 475 * chicaSize, 100 * chicaSize, 385 * chicaSize, 30 * chicaSize);
+    triangle(425 * chicaSize, 100 * chicaSize, 475 * chicaSize, 100 * chicaSize, 515 * chicaSize, 30 * chicaSize);
+    stroke(0);
+
+    // Body
+    strokeWeight(1);
+    fill(200, 160, 10);
+    rect(450 * chicaSize, 300 * chicaSize, 200 * chicaSize, 400 * chicaSize);
+
+    // Eyes
+    fill('white');
+    ellipse(400 * chicaSize, 185 * chicaSize, 70 * chicaSize, 70 * chicaSize);
+    ellipse(500 * chicaSize, 185 * chicaSize, 70 * chicaSize, 70 * chicaSize);
+    fill(227, 115, 230);
+    ellipse(500 * chicaSize, 185 * chicaSize, 40 * chicaSize, 40 * chicaSize);
+    ellipse(400 * chicaSize, 185 * chicaSize, 40 * chicaSize, 40 * chicaSize);
+    fill(3, 7, 3);
+    ellipse(500 * chicaSize, 185 * chicaSize, 20 * chicaSize, 20 * chicaSize);
+    ellipse(400 * chicaSize, 185 * chicaSize, 20 * chicaSize, 20 * chicaSize);
+    fill('black');
+    arc(400 * chicaSize, 175 * chicaSize, 65 * chicaSize, 50 * chicaSize, 3.14, 6.28);
+    arc(500 * chicaSize, 175 * chicaSize, 65 * chicaSize, 50 * chicaSize, 3.14, 6.28);
+
+    // Eyebrows
+    strokeWeight(20 * chicaSize);
+    line(475 * chicaSize, 130 * chicaSize, 525 * chicaSize, 130 * chicaSize);
+    line(375 * chicaSize, 130 * chicaSize, 425 * chicaSize, 130 * chicaSize);
+
+
+    // Mouth
+    strokeWeight(1 * chicaSize);
+    rect(450 * chicaSize, 285 * chicaSize, 100 * chicaSize, 50 * chicaSize);
+    fill('white');
+    rect(410 * chicaSize, 280 * chicaSize, 15 * chicaSize, 15 * chicaSize);
+    rect(430 * chicaSize, 280 * chicaSize, 15 * chicaSize, 15 * chicaSize);
+    rect(450 * chicaSize, 280 * chicaSize, 15 * chicaSize, 15 * chicaSize);
+    rect(470 * chicaSize, 280 * chicaSize, 15 * chicaSize, 15 * chicaSize);
+    rect(490 * chicaSize, 280 * chicaSize, 15 * chicaSize, 15 * chicaSize);
+
+    fill(186, 81, 13);
+    rect(450 * chicaSize, 300 * chicaSize, 100 * chicaSize, 25 * chicaSize);
+
+    // Beak
+    fill(186, 81, 13);
+    triangle(500 * chicaSize, 260 * chicaSize, 450 * chicaSize, 200 * chicaSize, 400 * chicaSize, 260 * chicaSize);
+
+    // Let's Eat Apron
+    noStroke();
+    fill('white');
+    rect(380 * chicaSize, 330 * chicaSize, 30 * chicaSize, 40 * chicaSize);
+    rect(520 * chicaSize, 330 * chicaSize, 30 * chicaSize, 40 * chicaSize);
+    rect(450 * chicaSize, 390 * chicaSize, 170 * chicaSize, 80 * chicaSize);
+    for (let i = 0; i < 30; i += 1) { // Chica Confetti Apron Loop
+        fill(random(chicaConfettiColor));
+        ellipse(
+            random(520, 370) * chicaSize,
+            random(360, 420) * chicaSize,
+            10 * chicaSize,
+            10 * chicaSize
+        )
+        noLoop(); // Does EXACTLY what you think it does
+    }
+
+    for (let i = 0; i < 10; i += 1) { // Chica Confetti Apron Loop 2
+        fill(random(chicaConfettiColor));
+        ellipse(
+            random(510, 530) * chicaSize,
+            random(320, 380) * chicaSize,
+            10 * chicaSize,
+            10 * chicaSize
+        )
+        noLoop(); // Does EXACTLY what you think it does
+    }
+
+    for (let i = 0; i < 10; i += 1) { // Chica Confetti Apron Loop 2
+        fill(random(chicaConfettiColor));
+        ellipse(
+            random(370, 390) * chicaSize,
+            random(320, 380) * chicaSize,
+            10 * chicaSize,
+            10 * chicaSize
+        )
+        noLoop(); // Does EXACTLY what you think it does
+    }
+    stroke(52, 0, 130);
+    strokeWeight(7);
+    fill(252, 251, 30);
+    textSize(15);
+    text("LET'S", 412.5 * chicaSize, 380 * chicaSize);
+    text("EAT !!!", 412.5 * chicaSize, 420 * chicaSize);
+    strokeWeight(1);
+    stroke(0);
+
+
+
+    // Arms
+    fill(200, 160, 10);
+    push();
+    translate(330 * chicaSize, 340 * chicaSize);
+    rotate(radians(10));
+    ellipse(0, 0, 50 * chicaSize, 200 * chicaSize);
+    pop();
+    push();
+    translate(570 * chicaSize, 340 * chicaSize);
+    rotate(radians(-10));
+    ellipse(0, 0, 50 * chicaSize, 200 * chicaSize);
+    pop();
+
+    // Legs
+    ellipse(400 * chicaSize, 535 * chicaSize, 50 * chicaSize, 200 * chicaSize);
+    ellipse(500 * chicaSize, 535 * chicaSize, 50 * chicaSize, 200 * chicaSize);
+
+    fill(181, 72, 1);
+    rect(400 * chicaSize, 565 * chicaSize, 50 * chicaSize, 100 * chicaSize, 10);
+    rect(500 * chicaSize, 565 * chicaSize, 50 * chicaSize, 100 * chicaSize, 10);
+    ellipse(500 * chicaSize, 625 * chicaSize, 70 * chicaSize, 20);
+    ellipse(500 * chicaSize, 625 * chicaSize, 70 * chicaSize, 20);
+    ellipse(400 * chicaSize, 625 * chicaSize, 70 * chicaSize, 20);
+    fill(170);
+    ellipse(425 * chicaSize, 625 * chicaSize, 20 * chicaSize, 15);
+    ellipse(375 * chicaSize, 625 * chicaSize, 20 * chicaSize, 15);
+    ellipse(475 * chicaSize, 625 * chicaSize, 20 * chicaSize, 15);
+    ellipse(525 * chicaSize, 625 * chicaSize, 20 * chicaSize, 15);
+    pop();
+}
+
+function drawFoxy() {
+    // Blocxy (Foxy)
+    push();
+    translate(foxyX, foxyY)
+
+    // Body
+    strokeWeight(1);
+    fill(121, 36, 26);
+    rect(450 * foxySize, 300 * foxySize, 200 * foxySize, 400 * foxySize);
+
+    // Hairs
+
+    // Eyes
+    fill('white');
+    ellipse(500 * foxySize, 185 * foxySize, 70 * foxySize, 70 * foxySize);
+    fill(170, 127, 44);
+    ellipse(500 * foxySize, 185 * foxySize, 40 * foxySize, 40 * foxySize);
+    fill(3, 7, 3);
+    ellipse(500 * foxySize, 185 * foxySize, 20 * foxySize, 20 * foxySize);
+    fill('black');
+    ellipse(400 * foxySize, 185 * foxySize, 65 * foxySize, 65 * foxySize); // Uses Pi and Pi * 2 to make even arc
+
+    // Eye Patch
+    fill(101, 7, 4);
+    arc(500 * foxySize, 175 * foxySize, 65 * foxySize, 50 * foxySize, 3.14, 6.28); // Uses Pi and Pi * 2 to make even arc
+
+    // Eyebrows
+    strokeWeight(20 * foxySize);
+    stroke(53, 5, 3);
+    line(370 * foxySize, 130 * foxySize, 430 * foxySize, 130 * foxySize);
+    line(470 * foxySize, 130 * foxySize, 530 * foxySize, 130 * foxySize);
+
+    // Mouth
+    strokeWeight(1 * foxySize);
+    fill('black');
+    rect(450 * foxySize, 285 * foxySize, 100 * foxySize, 50 * foxySize);
+    fill('white');
+    triangle(410 * foxySize, 290 * foxySize, 400 * foxySize, 310 * foxySize, 420 * foxySize, 310 * foxySize);
+
+    fill(233, 191, 107);
+    triangle(430 * foxySize, 290 * foxySize, 420 * foxySize, 310 * foxySize, 440 * foxySize, 310 * foxySize);
+
+    fill('white');
+    triangle(450 * foxySize, 290 * foxySize, 440 * foxySize, 310 * foxySize, 460 * foxySize, 310 * foxySize);
+
+    fill(233, 191, 107);
+    triangle(470 * foxySize, 290 * foxySize, 460 * foxySize, 310 * foxySize, 480 * foxySize, 310 * foxySize);
+
+    fill('white');
+    triangle(490 * foxySize, 290 * foxySize, 480 * foxySize, 310 * foxySize, 500 * foxySize, 310 * foxySize);
+
+    // Mouth
+    fill(121, 36, 26);
+    ellipse(450 * foxySize, 320 * foxySize, 100 * foxySize, 30 * foxySize);
+
+    // Nose
+    fill(162, 70, 62);
+    ellipse(450 * foxySize, 260 * foxySize, 100 * foxySize, 70 * foxySize);
+    fill('black');
+    ellipse(450 * foxySize, 235 * foxySize, 50 * foxySize, 25 * foxySize);
+
+    // Ears
+    // Left
+    fill(170);
+    push();
+    translate(340 * foxySize, 100 * foxySize); // Moves the origin to 340,110
+    rotate(radians(30)); // Rotates the rectangle below by 30 degrees
+    rect(0, 0, 40 * foxySize, 20 * foxySize); // Rectangle is at 0,0 because the origin is where the rectangles positon should be
+    pop();
+    push();
+    translate(310 * foxySize, 80 * foxySize)
+    rotate(radians(-55));
+    fill(121, 36, 26);
+    ellipse(0 * foxySize, -10 * foxySize, 70 * foxySize, 90 * foxySize);
+    fill(58, 2, 1);
+    ellipse(0 * foxySize, -10 * foxySize, 40 * foxySize, 60 * foxySize);
+    pop();
+
+    // Right
+    fill(170);
+    push();
+    translate(560 * foxySize, 100 * foxySize); // Moves the origin to 340,110
+    rotate(radians(-30)); // Rotates the rectangle below by 30 degrees
+    rect(0, 0, 40 * foxySize, 20 * foxySize); // Rectangle is at 0,0 because the origin is where the rectangles positon should be
+    pop();
+    push();
+    translate(585 * foxySize, 80 * foxySize)
+    rotate(radians(55));
+    fill(121, 36, 26);
+    ellipse(0 * foxySize, -10 * foxySize, 70 * foxySize, 90 * foxySize);
+    fill(58, 2, 1);
+    ellipse(0 * foxySize, -10 * foxySize, 40 * foxySize, 60 * foxySize);
+    pop();
+
+    // Arms
+    fill(121, 36, 26);
+    push();
+    translate(330 * foxySize, 340 * foxySize);
+    rotate(radians(10));
+    ellipse(0, 0, 50 * foxySize, 200 * foxySize);
+    pop();
+    push();
+    translate(570 * foxySize, 340 * foxySize);
+    rotate(radians(-10));
+    ellipse(0, 0, 50 * foxySize, 200 * foxySize);
+    pop();
+
+    // Legs
+    ellipse(400 * foxySize, 535 * foxySize, 50 * foxySize, 200 * foxySize);
+    ellipse(500 * foxySize, 535 * foxySize, 50 * foxySize, 200 * foxySize);
+    pop();
+
 }
