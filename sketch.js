@@ -1974,6 +1974,11 @@ function drawBlocky() {
     fill(161, 97, 42);
     rect(450 * freddySize, 300 * freddySize, 200 * freddySize, 400 * freddySize);
 
+    // Belly
+    fill(208, 124, 63);
+    ellipse(450 * bonnieSize, 400 * bonnieSize, 120 * bonnieSize, 180 * bonnieSize);
+
+
     // Hat
     fill(30)
     rect(450 * freddySize, 90 * freddySize, 150 * freddySize, 20 * freddySize);
@@ -2186,7 +2191,7 @@ function drawBonnie() {
 
     // Belly
     fill(127, 121, 146);
-    ellipse(225, 200, 60, 80);
+    ellipse(450 * bonnieSize, 400 * bonnieSize, 120 * bonnieSize, 180 * bonnieSize);
 
     // Eyes
     fill('white');
@@ -2392,6 +2397,20 @@ function drawFoxy() {
     rect(450 * foxySize, 300 * foxySize, 200 * foxySize, 400 * foxySize);
 
     // Hairs
+    noStroke();
+    rect(450 * foxySize, 75 * foxySize, 20 * foxySize, 50 * foxySize);
+    push();
+    translate(470 * foxySize, 80 * foxySize);
+    rotate(radians(45));
+    rect(0 * foxySize, 0 * foxySize, 20 * foxySize, 50 * foxySize);
+    pop();
+
+    push();
+    translate(430 * foxySize, 80 * foxySize);
+    rotate(radians(-45));
+    rect(0 * foxySize, 0 * foxySize, 20 * foxySize, 50 * foxySize);
+    pop();
+    stroke(0);
 
     // Eyes
     fill('white');
@@ -2406,6 +2425,8 @@ function drawFoxy() {
     // Eye Patch
     fill(101, 7, 4);
     arc(500 * foxySize, 175 * foxySize, 65 * foxySize, 50 * foxySize, 3.14, 6.28); // Uses Pi and Pi * 2 to make even arc
+    fill('black')
+    rect(407 * foxySize, 185 * foxySize, 115 * foxySize, 20 * foxySize)
 
     // Eyebrows
     strokeWeight(20 * foxySize);
@@ -2443,6 +2464,7 @@ function drawFoxy() {
     ellipse(450 * foxySize, 235 * foxySize, 50 * foxySize, 25 * foxySize);
 
     // Ears
+
     // Left
     fill(170);
     push();
