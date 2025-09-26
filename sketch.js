@@ -142,6 +142,8 @@ let cameraOpenSoundOnCooldown = false;
 let cameraStreamSoundOnCooldown = false;
 let currentCamera = 0;
 let soundWaveSending = false;
+let soundWaveInterval = 0;
+let soundWaveInUse = 0;
 
 // Animatronic Variables
 
@@ -155,7 +157,7 @@ let readyFreddy = false; // I took the oppertunity to name it ready freddy inste
 let foxyCamPosition = 1.2;
 let foxyRunDistance = 0;
 let foxyInOffice = false;
-let foxyStage = 2;
+let foxyStage = 0;
 let foxyReady = false;
 let foxyRunning = false;
 
@@ -173,7 +175,7 @@ let bonnieReady = false;
 let bonniePath = 0;
 
 // Chica Variables
-let chicaCamPosition = 11
+let chicaCamPosition = 1
 let chicaInOffice = false;
 let chicaReady = false;
 let chicaPath = 0;
@@ -292,16 +294,13 @@ function setup() {
 }
 
 function draw() {
-    background(150);
-    drawCameraScreen();
+    background(0);
 
-    // drawMainMenu();
+    drawMainMenu();
     // gameStarted();
 
     // mouseDebug();
 
-
-    mouseDebug();
 }
 
 // function drawMainMenu() {
@@ -1040,16 +1039,37 @@ function drawCameraScreen() {
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
+        soundWaveSending = true;
+        if (soundWaveSending == true && soundWaveInUse == 0) {
+            soundWaveInterval = 200;
+            soundWaveInUse = 1;
+        }
+    }
+
+    if (soundWaveInterval > 0 && soundWaveInUse == 1) {
         textSize(30);
         text("Sending Soundwave..", 25, 200);
+        soundWaveInterval -= 5;
+        print(soundWaveInterval);
+    }
+    if (soundWaveInterval == 0 && soundWaveSending == true) {
+        soundWaveSending = false;
+        textSize(30);
+        text("Soundwave Results", 35, 200);
         textSize(15);
-
         if (freddyCamPosition == currentCamera) {
             text("Freddy is Here", 125, 230);
         }
-
         if (bonnieCamPosition == currentCamera) {
             text("Bonnie is Here", 125, 270);
+        }
+
+        if (chicaCamPosition == currentCamera) {
+            text("Chica is Here", 125, 250);
+        }
+
+        if (foxyCamPosition == currentCamera) {
+            text("Foxy is Here", 125, 290);
         }
     }
 
@@ -1059,17 +1079,39 @@ function drawCameraScreen() {
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
-        textSize(30);
-        text("1B", 155, 210);
-        textSize(15);
+        soundWaveSending = true;
+        if (soundWaveSending == true && soundWaveInUse == 0) {
+            soundWaveInterval = 200;
+            soundWaveInUse = 1;
+        }
+    }
 
+    if (soundWaveInterval > 0 && soundWaveInUse == 1) {
+        textSize(30);
+        text("Sending Soundwave..", 25, 200);
+        soundWaveInterval -= 5;
+        print(soundWaveInterval);
+    }
+    if (soundWaveInterval == 0 && soundWaveSending == true) {
+        soundWaveSending = false;
+        textSize(30);
+        text("Soundwave Results", 35, 200);
+        textSize(15);
         if (freddyCamPosition == currentCamera) {
             text("Freddy is Here", 125, 230);
         }
-
         if (bonnieCamPosition == currentCamera) {
             text("Bonnie is Here", 125, 270);
         }
+
+        if (chicaCamPosition == currentCamera) {
+            text("Chica is Here", 125, 250);
+        }
+
+        if (foxyCamPosition == currentCamera) {
+            text("Foxy is Here", 125, 290);
+        }
+
     }
 
     if (screenCasting == true && currentCamera == 1.2) {
@@ -1093,7 +1135,7 @@ function drawCameraScreen() {
             text("Bonnie is Here", 125, 270);
         }
 
-        if (foxyStage == 0 ) {
+        if (foxyStage == 0) {
             fill(46, 38, 63);
             rect(150, 200, 270, 200);
             push();
@@ -1209,9 +1251,38 @@ function drawCameraScreen() {
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
+        soundWaveSending = true;
+        if (soundWaveSending == true && soundWaveInUse == 0) {
+            soundWaveInterval = 200;
+            soundWaveInUse = 1;
+        }
+    }
+
+    if (soundWaveInterval > 0 && soundWaveInUse == 1) {
         textSize(30);
-        text("5", 155, 210);
+        text("Sending Soundwave..", 25, 200);
+        soundWaveInterval -= 5;
+        print(soundWaveInterval);
+    }
+    if (soundWaveInterval == 0 && soundWaveSending == true) {
+        soundWaveSending = false;
+        textSize(30);
+        text("Soundwave Results", 35, 200);
         textSize(15);
+        if (freddyCamPosition == currentCamera) {
+            text("Freddy is Here", 125, 230);
+        }
+        if (bonnieCamPosition == currentCamera) {
+            text("Bonnie is Here", 125, 270);
+        }
+
+        if (chicaCamPosition == currentCamera) {
+            text("Chica is Here", 125, 250);
+        }
+
+        if (foxyCamPosition == currentCamera) {
+            text("Foxy is Here", 125, 290);
+        }
     }
 
     if (screenCasting == true && currentCamera == 3) {
@@ -1219,12 +1290,37 @@ function drawCameraScreen() {
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
-        textSize(30);
-        text("3", 155, 210);
-        textSize(15);
+        soundWaveSending = true;
+        if (soundWaveSending == true && soundWaveInUse == 0) {
+            soundWaveInterval = 200;
+            soundWaveInUse = 1;
+        }
+    }
 
+    if (soundWaveInterval > 0 && soundWaveInUse == 1) {
+        textSize(30);
+        text("Sending Soundwave..", 25, 200);
+        soundWaveInterval -= 5;
+        print(soundWaveInterval);
+    }
+    if (soundWaveInterval == 0 && soundWaveSending == true) {
+        soundWaveSending = false;
+        textSize(30);
+        text("Soundwave Results", 35, 200);
+        textSize(15);
+        if (freddyCamPosition == currentCamera) {
+            text("Freddy is Here", 125, 230);
+        }
         if (bonnieCamPosition == currentCamera) {
             text("Bonnie is Here", 125, 270);
+        }
+
+        if (chicaCamPosition == currentCamera) {
+            text("Chica is Here", 125, 250);
+        }
+
+        if (foxyCamPosition == currentCamera) {
+            text("Foxy is Here", 125, 290);
         }
     }
 
@@ -1234,16 +1330,37 @@ function drawCameraScreen() {
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
-        textSize(30);
-        text("[Video Unavailable]", 155, 210);
-        textSize(15);
-
-        if (foxyCamPosition == currentCamera) {
-            text("Foxy is here", 125, 250)
+        soundWaveSending = true;
+        if (soundWaveSending == true && soundWaveInUse == 0) {
+            soundWaveInterval = 200;
+            soundWaveInUse = 1;
         }
+    }
 
+    if (soundWaveInterval > 0 && soundWaveInUse == 1) {
+        textSize(30);
+        text("Sending Soundwave..", 25, 200);
+        soundWaveInterval -= 5;
+        print(soundWaveInterval);
+    }
+    if (soundWaveInterval == 0 && soundWaveSending == true) {
+        soundWaveSending = false;
+        textSize(30);
+        text("Soundwave Results", 35, 200);
+        textSize(15);
+        if (freddyCamPosition == currentCamera) {
+            text("Freddy is Here", 125, 230);
+        }
         if (bonnieCamPosition == currentCamera) {
             text("Bonnie is Here", 125, 270);
+        }
+
+        if (chicaCamPosition == currentCamera) {
+            text("Chica is Here", 125, 250);
+        }
+
+        if (foxyCamPosition == currentCamera) {
+            text("Foxy is Here", 125, 290);
         }
     }
 
@@ -1252,78 +1369,199 @@ function drawCameraScreen() {
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
-        textSize(30);
-        text("2B", 155, 210);
-        textSize(15);
+        soundWaveSending = true;
+        if (soundWaveSending == true && soundWaveInUse == 0) {
+            soundWaveInterval = 200;
+            soundWaveInUse = 1;
+        }
+    }
 
-        if (freddyCamPosition == 2.1) {
+    if (soundWaveInterval > 0 && soundWaveInUse == 1) {
+        textSize(30);
+        text("Sending Soundwave..", 25, 200);
+        soundWaveInterval -= 5;
+        print(soundWaveInterval);
+    }
+    if (soundWaveInterval == 0 && soundWaveSending == true) {
+        soundWaveSending = false;
+        textSize(30);
+        text("Soundwave Results", 35, 200);
+        textSize(15);
+        if (freddyCamPosition == currentCamera) {
             text("Freddy is Here", 125, 230);
         }
-
         if (bonnieCamPosition == currentCamera) {
             text("Bonnie is Here", 125, 270);
+        }
+
+        if (chicaCamPosition == currentCamera) {
+            text("Chica is Here", 125, 250);
+        }
+
+        if (foxyCamPosition == currentCamera) {
+            text("Foxy is Here", 125, 290);
         }
     }
 
     if (screenCasting == true && currentCamera == 4) {
 
-        // Actual Monitor Screen
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
-        textSize(30);
-        text("4", 155, 210);
-        textSize(15);
+        soundWaveSending = true;
+        if (soundWaveSending == true && soundWaveInUse == 0) {
+            soundWaveInterval = 200;
+            soundWaveInUse = 1;
+        }
+    }
 
+    if (soundWaveInterval > 0 && soundWaveInUse == 1) {
+        textSize(30);
+        text("Sending Soundwave..", 25, 200);
+        soundWaveInterval -= 5;
+        print(soundWaveInterval);
+    }
+    if (soundWaveInterval == 0 && soundWaveSending == true) {
+        soundWaveSending = false;
+        textSize(30);
+        text("Soundwave Results", 35, 200);
+        textSize(15);
         if (freddyCamPosition == currentCamera) {
             text("Freddy is Here", 125, 230);
+        }
+        if (bonnieCamPosition == currentCamera) {
+            text("Bonnie is Here", 125, 270);
+        }
+
+        if (chicaCamPosition == currentCamera) {
+            text("Chica is Here", 125, 250);
+        }
+
+        if (foxyCamPosition == currentCamera) {
+            text("Foxy is Here", 125, 290);
         }
     }
 
     if (screenCasting == true && currentCamera == 4.1) {
 
-        // Actual Monitor Screen
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
-        textSize(30);
-        text("4B", 155, 210);
-        textSize(15);
+        soundWaveSending = true;
+        if (soundWaveSending == true && soundWaveInUse == 0) {
+            soundWaveInterval = 200;
+            soundWaveInUse = 1;
+        }
+    }
 
+    if (soundWaveInterval > 0 && soundWaveInUse == 1) {
+        textSize(30);
+        text("Sending Soundwave..", 25, 200);
+        soundWaveInterval -= 5;
+        print(soundWaveInterval);
+    }
+    if (soundWaveInterval == 0 && soundWaveSending == true) {
+        soundWaveSending = false;
+        textSize(30);
+        text("Soundwave Results", 35, 200);
+        textSize(15);
         if (freddyCamPosition == currentCamera) {
             text("Freddy is Here", 125, 230);
+        }
+        if (bonnieCamPosition == currentCamera) {
+            text("Bonnie is Here", 125, 270);
+        }
+
+        if (chicaCamPosition == currentCamera) {
+            text("Chica is Here", 125, 250);
+        }
+
+        if (foxyCamPosition == currentCamera) {
+            text("Foxy is Here", 125, 290);
         }
     }
 
     if (screenCasting == true && currentCamera == 6) {
 
-        // Actual Monitor Screen
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
-        textSize(30);
-        text("6", 155, 210);
-        textSize(15);
+        soundWaveSending = true;
+        if (soundWaveSending == true && soundWaveInUse == 0) {
+            soundWaveInterval = 200;
+            soundWaveInUse = 1;
+        }
+    }
 
+    if (soundWaveInterval > 0 && soundWaveInUse == 1) {
+        textSize(30);
+        text("Sending Soundwave..", 25, 200);
+        soundWaveInterval -= 5;
+        print(soundWaveInterval);
+    }
+    if (soundWaveInterval == 0 && soundWaveSending == true) {
+        soundWaveSending = false;
+        textSize(30);
+        text("Soundwave Results", 35, 200);
+        textSize(15);
         if (freddyCamPosition == currentCamera) {
             text("Freddy is Here", 125, 230);
+        }
+        if (bonnieCamPosition == currentCamera) {
+            text("Bonnie is Here", 125, 270);
+        }
+
+        if (chicaCamPosition == currentCamera) {
+            text("Chica is Here", 125, 250);
+        }
+
+        if (foxyCamPosition == currentCamera) {
+            text("Foxy is Here", 125, 290);
         }
     }
 
 
     if (screenCasting == true && currentCamera == 7) {
 
-        // Actual Monitor Screen
         fill(10);
         rect(170, 200, 300, 200);
         fill('white');
-        textSize(30);
-        text("7", 155, 210);
-        textSize(15);
+        soundWaveSending = true;
+        if (soundWaveSending == true && soundWaveInUse == 0) {
+            soundWaveInterval = 200;
+            soundWaveInUse = 1;
+        }
+    }
 
+    if (soundWaveInterval > 0 && soundWaveInUse == 1) {
+        textSize(30);
+        text("Sending Soundwave..", 25, 200);
+        soundWaveInterval -= 5;
+        print(soundWaveInterval);
+    }
+    if (soundWaveInterval == 0 && soundWaveSending == true) {
+        soundWaveSending = false;
+        textSize(30);
+        text("Soundwave Results", 35, 200);
+        textSize(15);
         if (freddyCamPosition == currentCamera) {
             text("Freddy is Here", 125, 230);
         }
+        if (bonnieCamPosition == currentCamera) {
+            text("Bonnie is Here", 125, 270);
+        }
+
+        if (chicaCamPosition == currentCamera) {
+            text("Chica is Here", 125, 250);
+        }
+
+        if (foxyCamPosition == currentCamera) {
+            text("Foxy is Here", 125, 290);
+        }
+    }
+
+    if (soundWaveInUse == 0) {
+        soundWaveInterval = 0;
     }
 }
 
@@ -1435,56 +1673,67 @@ function mouseClicked() {
 
     if (mouseX >= 402 && mouseX <= 429 && mouseY >= 280 && mouseY <= 300 && screenCasting == true) {
         currentCamera = 2.1;
+        soundWaveInUse = 0;
         monitorSwitchSound.play();
     }
 
     else if (mouseX >= 402 && mouseX <= 429 && mouseY >= 256 && mouseY <= 277 && screenCasting == true) {
         currentCamera = 2;
+        soundWaveInUse = 0;
         monitorSwitchSound.play();
     }
 
     else if (mouseX >= 472 && mouseX <= 498 && mouseY >= 256 && mouseY <= 278 && screenCasting == true) {
         currentCamera = 4;
+        soundWaveInUse = 0;
         monitorSwitchSound.play();
     }
 
     else if (mouseX >= 472 && mouseX <= 498 && mouseY >= 280 && mouseY <= 300 && screenCasting == true) {
         currentCamera = 4.1;
+        soundWaveInUse = 0;
         monitorSwitchSound.play();
     }
 
     else if (mouseX >= 357 && mouseX <= 383 && mouseY >= 242 && mouseY <= 263 && screenCasting == true) {
         currentCamera = 3;
+        soundWaveInUse = 0;
         monitorSwitchSound.play();
     }
 
     else if (mouseX >= 367 && mouseX <= 394 && mouseY >= 180 && mouseY <= 199 && screenCasting == true) {
         currentCamera = 1.2;
+        soundWaveInUse = 0;
         monitorSwitchSound.play();
     }
 
     else if (mouseX >= 327 && mouseX <= 354 && mouseY >= 139 && mouseY <= 160 && screenCasting == true) {
         currentCamera = 5;
+        soundWaveInUse = 0;
         monitorSwitchSound.play();
     }
 
     else if (mouseX >= 382 && mouseX <= 408 && mouseY >= 125 && mouseY <= 145 && screenCasting == true) {
         currentCamera = 1.1;
+        soundWaveInUse = 0;
         monitorSwitchSound.play();
     }
 
     else if (mouseX >= 407 && mouseX <= 433 && mouseY >= 92 && mouseY <= 112 && screenCasting == true) {
         currentCamera = 1;
+        soundWaveInUse = 0;
         monitorSwitchSound.play();
     }
 
     else if (mouseX >= 554 && mouseX <= 581 && mouseY >= 147 && mouseY <= 167 && screenCasting == true) {
         currentCamera = 7;
+        soundWaveInUse = 0;
         monitorSwitchSound.play();
     }
 
     else if (mouseX >= 537 && mouseX <= 565 && mouseY >= 239 && mouseY <= 259 && screenCasting == true) {
         currentCamera = 6;
+        soundWaveInUse = 0;
         monitorSwitchSound.play();
     }
 
@@ -1996,12 +2245,14 @@ function foxyLogic() {
         print("Foxy: I've got you now!")
         foxyRunning = false;
         foxyRunDistance = 0;
+        foxyStage = 0;
     }
 
     if (foxyRunDistance == 5 && leftDoorClosed == true) {
         print("Foxy: I do NOT got you now.. :(")
         foxyRunning = false;
         foxyRunDistance = 0;
+        foxyStage = 0;
     }
 }
 
