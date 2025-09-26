@@ -136,11 +136,12 @@ let tabletX = 300;
 let tabletY = 600; // Change to 600 when done
 let tabletOpened = false;
 let tabletAvailable = true;
-let screenCasting = false;
+let screenCasting = true;
 let CameraMapSize = 0.55;
 let cameraOpenSoundOnCooldown = false;
 let cameraStreamSoundOnCooldown = false;
 let currentCamera = 0;
+let soundWaveSending = false;
 
 // Animatronic Variables
 
@@ -154,7 +155,7 @@ let readyFreddy = false; // I took the oppertunity to name it ready freddy inste
 let foxyCamPosition = 1.2;
 let foxyRunDistance = 0;
 let foxyInOffice = false;
-let foxyStage = 0;
+let foxyStage = 2;
 let foxyReady = false;
 let foxyRunning = false;
 
@@ -248,8 +249,12 @@ let chicaY = 50;
 
 // Blocxy
 let foxySize = 0.5;
-let foxyX = -30
-let foxyY = 50;
+let foxyX = -25;
+let foxyY = 60;
+let foxyLeftArmX = 310;
+let foxyLeftArmY = 340;
+let foxyRightArmX = 630;
+let foxyRightArmY = 320;
 
 
 function preload() {
@@ -287,14 +292,14 @@ function setup() {
 }
 
 function draw() {
-    background(255);
+    background(150);
+    drawCameraScreen();
 
     // drawMainMenu();
     // gameStarted();
 
     // mouseDebug();
 
-    drawFoxy();
 
     mouseDebug();
 }
@@ -310,6 +315,8 @@ function drawMainMenu() {
     if (gameBegan == false) {
 
         // Blocky (Freddy)
+        freddyX = 0;
+        freddySize = 1;
 
         drawBlocky();
 
@@ -1034,7 +1041,7 @@ function drawCameraScreen() {
         rect(170, 200, 300, 200);
         fill('white');
         textSize(30);
-        text("1A", 155, 210);
+        text("Sending Soundwave..", 25, 200);
         textSize(15);
 
         if (freddyCamPosition == currentCamera) {
@@ -1073,13 +1080,127 @@ function drawCameraScreen() {
         textSize(30);
         text("1C", 155, 210);
         textSize(15);
+        fill('black');
+        strokeWeight(2);
+        stroke('black');
+        strokeWeight(1);
 
         if (foxyCamPosition == currentCamera) {
-            text("Foxy is here", 125, 250)
+
         }
 
         if (bonnieCamPosition == currentCamera) {
             text("Bonnie is Here", 125, 270);
+        }
+
+        if (foxyStage == 0 ) {
+            fill(46, 38, 63);
+            rect(150, 200, 270, 200);
+            push();
+            translate(-100, 0)
+            line(150, 101, 150, 299);
+            pop();
+            push();
+            translate(-50, 0)
+            line(150, 101, 150, 299);
+            pop();
+            line(150, 101, 150, 299);
+            push();
+            translate(50, 0)
+            fill('black');
+            triangle(180, 299, 140, 299, 155, 100);
+            fill(72, 77, 88);
+            rect(50, 279, 20, 40);
+            rect(50, 240, 100, 50);
+            textSize(12);
+            noStroke();
+            fill('black');
+            text("SORRY!", 30, 235);
+            text("OUT OF ORDER", 5, 250);
+            pop();
+            push();
+            translate(120, 0)
+            line(150, 101, 150, 299);
+            pop();
+        }
+
+        if (foxyStage == 1) {
+            fill(46, 38, 63);
+            rect(150, 200, 270, 200);
+            push();
+            translate(-100, 0)
+            line(150, 101, 150, 299);
+            pop();
+            push();
+            translate(-50, 0)
+            line(150, 101, 150, 299);
+            pop();
+            line(150, 101, 150, 299);
+            push();
+            translate(50, 0)
+            fill('black');
+            triangle(200, 299, 120, 299, 155, 100);
+            fill('white');
+            noStroke();
+            ellipse(160, 200, 5, 5);
+            fill(255, 100);
+            ellipse(160, 200, 10, 10);
+            fill(255, 50);
+            ellipse(160, 200, 15, 15);
+            fill(255, 20);
+            ellipse(160, 200, 20, 20);
+            fill(255, 10);
+            ellipse(160, 200, 25, 25);
+            stroke(1);
+            fill(72, 77, 88);
+            rect(50, 279, 20, 40);
+            rect(50, 240, 100, 50);
+            textSize(12);
+            noStroke();
+            fill('black');
+            text("SORRY!", 30, 235);
+            text("OUT OF ORDER", 5, 250);
+            pop();
+            push();
+            translate(120, 0)
+            line(150, 101, 150, 299);
+            pop();
+        }
+
+        if (foxyStage == 2) {
+            fill(46, 38, 63);
+            rect(150, 200, 270, 200);
+            push();
+            translate(-100, 0)
+            line(150, 101, 150, 299);
+            pop();
+            push();
+            translate(-50, 0)
+            line(150, 101, 150, 299);
+            pop();
+            line(150, 101, 150, 299);
+            push();
+            translate(50, 0)
+            fill('black');
+            triangle(210, 299, 100, 299, 155, 100);
+            fill('white');
+            fill(72, 77, 88);
+            rect(50, 279, 20, 40);
+            rect(50, 240, 100, 50);
+            textSize(12);
+            noStroke();
+            fill('black');
+            text("SORRY!", 30, 235);
+            text("OUT OF ORDER", 5, 250);
+            pop();
+            push();
+            translate(120, 0)
+            line(150, 101, 150, 299);
+            foxySize = 0.25
+            foxyX = -30
+            foxyY = 133
+            drawFoxy();
+            pop();
         }
     }
 
@@ -1114,7 +1235,7 @@ function drawCameraScreen() {
         rect(170, 200, 300, 200);
         fill('white');
         textSize(30);
-        text("2A", 155, 210);
+        text("[Video Unavailable]", 155, 210);
         textSize(15);
 
         if (foxyCamPosition == currentCamera) {
@@ -1976,7 +2097,7 @@ function drawBlocky() {
 
     // Belly
     fill(208, 124, 63);
-    ellipse(450 * bonnieSize, 400 * bonnieSize, 120 * bonnieSize, 180 * bonnieSize);
+    ellipse(450 * freddySize, 400 * freddySize, 120 * freddySize, 180 * freddySize);
 
 
     // Hat
@@ -2395,6 +2516,17 @@ function drawFoxy() {
     strokeWeight(1);
     fill(121, 36, 26);
     rect(450 * foxySize, 300 * foxySize, 200 * foxySize, 400 * foxySize);
+    // Belly
+    fill(189, 79, 56);
+    rect(450 * foxySize, 400 * foxySize, 120 * foxySize, 180 * foxySize, 10);
+    fill(121, 36, 26);
+
+    // Whiskers
+    triangle(300 * foxySize, 150 * foxySize, 350 * foxySize, 140 * foxySize, 350 * foxySize, 170 * foxySize);
+    triangle(600 * foxySize, 150 * foxySize, 550 * foxySize, 140 * foxySize, 550 * foxySize, 170 * foxySize);
+    triangle(270 * foxySize, 200 * foxySize, 350 * foxySize, 170 * foxySize, 350 * foxySize, 230 * foxySize);
+    triangle(630 * foxySize, 200 * foxySize, 550 * foxySize, 170 * foxySize, 550 * foxySize, 230 * foxySize);
+
 
     // Hairs
     noStroke();
@@ -2411,6 +2543,50 @@ function drawFoxy() {
     rect(0 * foxySize, 0 * foxySize, 20 * foxySize, 50 * foxySize);
     pop();
     stroke(0);
+
+    // Shoulder Hair
+
+    // Left
+    push();
+    translate(140 * foxySize, 650 * foxySize);
+    rotate(radians(-75));
+
+    noStroke();
+    rect(450 * foxySize, 75 * foxySize, 10 * foxySize, 40 * foxySize);
+    push();
+    translate(460 * foxySize, 80 * foxySize);
+    rotate(radians(20));
+    rect(0 * foxySize, 0 * foxySize, 10 * foxySize, 40 * foxySize);
+    pop();
+
+    push();
+    translate(440 * foxySize, 80 * foxySize);
+    rotate(radians(-20));
+    rect(0 * foxySize, 0 * foxySize, 10 * foxySize, 40 * foxySize);
+    pop();
+    stroke(0);
+    pop();
+
+    // Right
+    push();
+    translate(525 * foxySize, -220 * foxySize);
+    rotate(radians(75));
+
+    noStroke();
+    rect(450 * foxySize, 75 * foxySize, 10 * foxySize, 40 * foxySize);
+    push();
+    translate(460 * foxySize, 80 * foxySize);
+    rotate(radians(20));
+    rect(0 * foxySize, 0 * foxySize, 10 * foxySize, 40 * foxySize);
+    pop();
+
+    push();
+    translate(440 * foxySize, 80 * foxySize);
+    rotate(radians(-20));
+    rect(0 * foxySize, 0 * foxySize, 10 * foxySize, 40 * foxySize);
+    pop();
+    stroke(0);
+    pop();
 
     // Eyes
     fill('white');
@@ -2453,15 +2629,29 @@ function drawFoxy() {
     fill('white');
     triangle(490 * foxySize, 290 * foxySize, 480 * foxySize, 310 * foxySize, 500 * foxySize, 310 * foxySize);
 
-    // Mouth
+    fill('white');
+    triangle(490 * foxySize, 290 * foxySize, 480 * foxySize, 270 * foxySize, 500 * foxySize, 270 * foxySize);
+
+    fill('white');
+    triangle(410 * foxySize, 290 * foxySize, 400 * foxySize, 270 * foxySize, 420 * foxySize, 270 * foxySize);
+
+
+    // Jaw
     fill(121, 36, 26);
-    ellipse(450 * foxySize, 320 * foxySize, 100 * foxySize, 30 * foxySize);
+    ellipse(450 * foxySize, 320 * foxySize, 115 * foxySize, 30 * foxySize);
 
     // Nose
     fill(162, 70, 62);
     ellipse(450 * foxySize, 260 * foxySize, 100 * foxySize, 70 * foxySize);
     fill('black');
     ellipse(450 * foxySize, 235 * foxySize, 50 * foxySize, 25 * foxySize);
+    ellipse(405 * foxySize, 250 * foxySize, 5 * foxySize, 5 * foxySize);
+    ellipse(495 * foxySize, 250 * foxySize, 5 * foxySize, 5 * foxySize);
+    ellipse(485 * foxySize, 240 * foxySize, 5 * foxySize, 5 * foxySize);
+    ellipse(415 * foxySize, 240 * foxySize, 5 * foxySize, 5 * foxySize);
+
+
+
 
     // Ears
 
@@ -2500,19 +2690,53 @@ function drawFoxy() {
     // Arms
     fill(121, 36, 26);
     push();
-    translate(330 * foxySize, 340 * foxySize);
-    rotate(radians(10));
-    ellipse(0, 0, 50 * foxySize, 200 * foxySize);
+    translate(foxyLeftArmX * foxySize, foxyLeftArmY * foxySize);
+    if (foxyStage == 2) {
+        (rotate(radians(60)));
+    }
+
+    else {
+        rotate(radians(10));
+    }
+    ellipse(0, 0, 50 * foxySize, 170 * foxySize);
+    fill(198, 191, 193);
+    ellipse(0, 75 * foxySize, 55 * foxySize, 25 * foxySize);
+    rect(0 * foxySize, 100 * foxySize, 20 * foxySize, 30 * foxySize);
+    rotate(radians(-25));
+    rect(-47 * foxySize, 115 * foxySize, 20 * foxySize, 25 * foxySize);
+    rotate(radians(-30));
+    rect(-105 * foxySize, 95 * foxySize, 20 * foxySize, 20 * foxySize);
+    translate(-105 * foxySize, 120 * foxySize)
+    triangle(0 * foxySize, 20 * foxySize, -10 * foxySize, -15 * foxySize, 10 * foxySize, -15 * foxySize);
     pop();
     push();
-    translate(570 * foxySize, 340 * foxySize);
-    rotate(radians(-10));
+    translate(foxyRightArmX * foxySize, foxyRightArmY * foxySize);
+    if (foxyStage == 2) {
+        (rotate(radians(-105)));
+    }
+
+    else {
+        rotate(radians(-10));
+    }
     ellipse(0, 0, 50 * foxySize, 200 * foxySize);
+    fill(109, 96, 105);
+    ellipse(0, 90 * foxySize, 40 * foxySize, 60 * foxySize);
     pop();
 
     // Legs
-    ellipse(400 * foxySize, 535 * foxySize, 50 * foxySize, 200 * foxySize);
-    ellipse(500 * foxySize, 535 * foxySize, 50 * foxySize, 200 * foxySize);
+    fill(95, 40, 8);
+    stroke(0);
+    ellipse(400 * foxySize, 535 * foxySize, 50 * foxySize, 100 * foxySize);
+    ellipse(500 * foxySize, 535 * foxySize, 50 * foxySize, 100 * foxySize);
+    fill(109, 96, 105);
+    ellipse(400 * foxySize, 600 * foxySize, 50 * foxySize, 120 * foxySize);
+    ellipse(500 * foxySize, 600 * foxySize, 50 * foxySize, 120 * foxySize);
+    rect(500 * foxySize, 650 * foxySize, 70 * foxySize, 30 * foxySize);
+    rect(400 * foxySize, 650 * foxySize, 70 * foxySize, 30 * foxySize);
+    rect(380 * foxySize, 650 * foxySize, 25 * foxySize, 30 * foxySize);
+    rect(420 * foxySize, 650 * foxySize, 25 * foxySize, 30 * foxySize);
+    rect(480 * foxySize, 650 * foxySize, 25 * foxySize, 30 * foxySize);
+    rect(500 * foxySize, 650 * foxySize, 25 * foxySize, 30 * foxySize);
     pop();
 
 }
