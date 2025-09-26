@@ -566,6 +566,41 @@ function drawOfficeDeskDecoration() {
     rect(390, 215, 10, 10);
     rect(340, 215, 10, 10);
 
+    // Bonnie Poster
+    push();
+    translate(-65, 0);
+    fill(241, 173, 247);
+    rect(300, 100, 70, 100);
+    bonnieSize = 0.125
+    bonnieX = 245;
+    bonnieY = 70;
+    drawBonnie();
+    fill(150);
+    rect(300, 30, 70, 30);
+    fill(200);
+    textSize(15);
+    text("Blocky", 278.5, 28);
+    text("Rabbit", 278.5, 43);
+    pop();
+
+    // Chica Poster
+
+    push();
+    translate(65, 0);
+    fill(255, 211, 92);
+    rect(300, 100, 70, 100);
+    chicaSize = 0.125
+    chicaX = 245;
+    chicaY = 65;
+    drawChica();
+    fill(150);
+    rect(300, 30, 70, 30);
+    fill(200);
+    textSize(15);
+    text("Blocky", 278.5, 28);
+    text("Chicken", 273.5, 43);
+    pop();
+
 }
 
 
@@ -1242,6 +1277,38 @@ function drawCameraScreen() {
             foxyX = -30
             foxyY = 133
             drawFoxy();
+            pop();
+        }
+
+        if (foxyStage == 3) {
+            fill(46, 38, 63);
+            rect(150, 200, 270, 200);
+            push();
+            translate(-100, 0)
+            line(150, 101, 150, 299);
+            pop();
+            push();
+            translate(-50, 0)
+            line(150, 101, 150, 299);
+            pop();
+            line(150, 101, 150, 299);
+            push();
+            translate(50, 0)
+            fill('black');
+            triangle(210, 299, 100, 299, 155, 100);
+            fill('white');
+            fill(72, 77, 88);
+            rect(50, 279, 20, 40);
+            rect(50, 240, 100, 50);
+            textSize(12);
+            noStroke();
+            fill('black');
+            text("SORRY!", 30, 235);
+            text("OUT OF ORDER", 5, 250);
+            pop();
+            push();
+            translate(120, 0)
+            line(150, 101, 150, 299);
             pop();
         }
     }
@@ -2241,6 +2308,12 @@ function foxyLogic() {
         print(foxyRunDistance);
     }
 
+    if (foxyRunning == false) {
+        foxyCamPosition = 1.3
+        foxyRunDistance -= 5
+        print(foxyRunDistance);
+    }
+
     if (foxyRunDistance == 5 && leftDoorClosed == false) {
         print("Foxy: I've got you now!")
         foxyRunning = false;
@@ -2692,7 +2765,6 @@ function drawChica() {
             10 * chicaSize,
             10 * chicaSize
         )
-        noLoop(); // Does EXACTLY what you think it does
     }
 
     for (let i = 0; i < 10; i += 1) { // Chica Confetti Apron Loop 2
@@ -2703,7 +2775,6 @@ function drawChica() {
             10 * chicaSize,
             10 * chicaSize
         )
-        noLoop(); // Does EXACTLY what you think it does
     }
 
     for (let i = 0; i < 10; i += 1) { // Chica Confetti Apron Loop 2
@@ -2714,14 +2785,13 @@ function drawChica() {
             10 * chicaSize,
             10 * chicaSize
         )
-        noLoop(); // Does EXACTLY what you think it does
     }
     stroke(52, 0, 130);
-    strokeWeight(7);
+    strokeWeight(7 * chicaSize);
     fill(252, 251, 30);
-    textSize(15);
-    text("LET'S", 412.5 * chicaSize, 380 * chicaSize);
-    text("EAT !!!", 412.5 * chicaSize, 420 * chicaSize);
+    textSize(15 * chicaSize);
+    text("LET'S", 437.5 * chicaSize, 370 * chicaSize);
+    text("EAT !!!", 437.5 * chicaSize, 410 * chicaSize);
     strokeWeight(1);
     stroke(0);
 
@@ -2747,14 +2817,14 @@ function drawChica() {
     fill(181, 72, 1);
     rect(400 * chicaSize, 565 * chicaSize, 50 * chicaSize, 100 * chicaSize, 10);
     rect(500 * chicaSize, 565 * chicaSize, 50 * chicaSize, 100 * chicaSize, 10);
-    ellipse(500 * chicaSize, 625 * chicaSize, 70 * chicaSize, 20);
-    ellipse(500 * chicaSize, 625 * chicaSize, 70 * chicaSize, 20);
-    ellipse(400 * chicaSize, 625 * chicaSize, 70 * chicaSize, 20);
+    ellipse(500 * chicaSize, 625 * chicaSize, 70 * chicaSize, 10);
+    ellipse(500 * chicaSize, 625 * chicaSize, 70 * chicaSize, 10);
+    ellipse(400 * chicaSize, 625 * chicaSize, 70 * chicaSize, 10);
     fill(170);
-    ellipse(425 * chicaSize, 625 * chicaSize, 20 * chicaSize, 15);
-    ellipse(375 * chicaSize, 625 * chicaSize, 20 * chicaSize, 15);
-    ellipse(475 * chicaSize, 625 * chicaSize, 20 * chicaSize, 15);
-    ellipse(525 * chicaSize, 625 * chicaSize, 20 * chicaSize, 15);
+    ellipse(425 * chicaSize, 625 * chicaSize, 20 * chicaSize, 10);
+    ellipse(375 * chicaSize, 625 * chicaSize, 20 * chicaSize, 10);
+    ellipse(475 * chicaSize, 625 * chicaSize, 20 * chicaSize, 10);
+    ellipse(525 * chicaSize, 625 * chicaSize, 20 * chicaSize, 10);
     pop();
 }
 
