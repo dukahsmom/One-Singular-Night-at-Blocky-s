@@ -381,10 +381,13 @@ function drawMainMenu() {
         bonnieScareTime = 0;
 
         // Menu Variables
+        staticLineX = 300;
+        staticLineY = 175;
+        gameBegan = false;
         fadeInEffectWaitTime = 0;
         fadeInEffectTransparency = 255;
         textFadeInEffectTransparency = 255;
-        staticParticles = [];
+        staticParticles = []
 
         // Start of Game Variables
         phoneGuyRinging = false;
@@ -396,24 +399,34 @@ function drawMainMenu() {
         phoneGuyTextInterval = 0;
         phoneGuySoundPlayed = 0;
 
+        // Time Variables
+        time = 12;
+
+        // Power Variables
+        powerConsumptionLevel = 1;
+        power = 100;
 
         // Camera Variables
         tabletX = 300;
-        tabletY = 600;
+        tabletY = 600; // Change to 600 when done
         tabletOpened = false;
         tabletAvailable = true;
-        screenCasting = false;
+        screenCasting = true;
         CameraMapSize = 0.55;
         cameraOpenSoundOnCooldown = false;
         cameraStreamSoundOnCooldown = false;
         currentCamera = 0;
+        soundWaveSending = false;
+        soundWaveInterval = 0;
+        soundWaveInUse = 0;
 
         // Animatronic Variables
 
         // Freddy Variables
-        freddyCamPosition = 1
+        freddyCamPosition = 1;
         freddyInOffice = false;
-        readyFreddy = false;
+        readyFreddy = false; // I took the oppertunity to name it ready freddy instead of freddy ready
+        // because it's funny
 
         // Foxy Variables
         foxyCamPosition = 1.2;
@@ -422,6 +435,56 @@ function drawMainMenu() {
         foxyStage = 0;
         foxyReady = false;
         foxyRunning = false;
+
+        // Golden Freddy Variables
+        goldenFreddySpawned = false;
+        goldenFreddyStareDuration = 0;
+        goldenFreddyDuration = 0;
+        goldenFreddyDurationSetCooldown = false;
+        goldenFreddyStareDurationSetCooldown = false;
+
+        // Bonnie Variables
+        bonnieCamPosition = 1;
+        bonnieInOffice = false;
+        bonnieReady = false;
+        bonniePath = 0;
+
+        // Chica Variables
+        chicaCamPosition = 1
+        chicaInOffice = false;
+        chicaReady = false;
+        chicaPath = 0;
+        chicaConfettiColor = ['pink', 'blue', 'yellow', 'orange'];
+
+        // X Positions for Icons
+        cam1AXPos = 420;
+        cam1BXPos = 395;
+        cam1CXPos = 380;
+        cam2AXPos = 415;
+        cam2BXPos = 415;
+        cam3XPos = 370;
+        cam4AXPos = 485;
+        cam4BXPos = 485;
+        cam5XPos = 340;
+        cam6XPos = 552.5;
+        cam7XPos = 568;
+        youIconXPos = 450;
+
+
+        // Y Positions for Icons
+        cam1AYPos = 102.5;
+        cam1BYPos = 135;
+        cam1CYPos = 190;
+        cam2AYPos = 267;
+        cam2BYPos = 290;
+        cam3YPos = 252.5;
+        cam4AYPos = 267;
+        cam4BYPos = 290;
+        cam5YPos = 150;
+        cam6YPos = 250;
+        cam7YPos = 157.5;
+        youIconYPos = 300;
+
 
         // Left Door Variables
         leftDoorY = 0;
@@ -440,6 +503,35 @@ function drawMainMenu() {
         // Right Light Button Variables
         rightLightActivated = false;
         rightLightSoundPlayed = false;
+
+        // Animatronic Design Variables
+
+        // Blocky
+        freddySize = 0.5;
+        freddyX = -30;
+        freddyY = 30;
+
+        freddyX2 = 200;
+        freddyY2 = 30;
+
+        // Blunny
+        bonnieSize = 0.5;
+        bonnieX = -30;
+        bonnieY = 50;
+
+        // Blocky Chicken
+        chicaSize = 0.5;
+        chicaX = -30;
+        chicaY = 50;
+
+        // Blocxy
+        foxySize = 0.5;
+        foxyX = -25;
+        foxyY = 60;
+        foxyLeftArmX = 310;
+        foxyLeftArmY = 340;
+        foxyRightArmX = 630;
+        foxyRightArmY = 320;
 
         plushieNoseSound.stop();
         FNAFDoorClose.stop();
@@ -1085,7 +1177,6 @@ function drawCameraScreen() {
         textSize(30);
         text("Sending Soundwave..", 25, 200);
         soundWaveInterval -= 5;
-        print(soundWaveInterval);
     }
     if (soundWaveInterval == 0 && soundWaveSending == true) {
         soundWaveSending = false;
@@ -1125,7 +1216,6 @@ function drawCameraScreen() {
         textSize(30);
         text("Sending Soundwave..", 25, 200);
         soundWaveInterval -= 5;
-        print(soundWaveInterval);
     }
     if (soundWaveInterval == 0 && soundWaveSending == true) {
         soundWaveSending = false;
@@ -1329,7 +1419,6 @@ function drawCameraScreen() {
         textSize(30);
         text("Sending Soundwave..", 25, 200);
         soundWaveInterval -= 5;
-        print(soundWaveInterval);
     }
     if (soundWaveInterval == 0 && soundWaveSending == true) {
         soundWaveSending = false;
@@ -1368,7 +1457,6 @@ function drawCameraScreen() {
         textSize(30);
         text("Sending Soundwave..", 25, 200);
         soundWaveInterval -= 5;
-        print(soundWaveInterval);
     }
     if (soundWaveInterval == 0 && soundWaveSending == true) {
         soundWaveSending = false;
@@ -1408,7 +1496,6 @@ function drawCameraScreen() {
         textSize(30);
         text("Sending Soundwave..", 25, 200);
         soundWaveInterval -= 5;
-        print(soundWaveInterval);
     }
     if (soundWaveInterval == 0 && soundWaveSending == true) {
         soundWaveSending = false;
@@ -1447,7 +1534,6 @@ function drawCameraScreen() {
         textSize(30);
         text("Sending Soundwave..", 25, 200);
         soundWaveInterval -= 5;
-        print(soundWaveInterval);
     }
     if (soundWaveInterval == 0 && soundWaveSending == true) {
         soundWaveSending = false;
@@ -1486,7 +1572,6 @@ function drawCameraScreen() {
         textSize(30);
         text("Sending Soundwave..", 25, 200);
         soundWaveInterval -= 5;
-        print(soundWaveInterval);
     }
     if (soundWaveInterval == 0 && soundWaveSending == true) {
         soundWaveSending = false;
@@ -1525,7 +1610,6 @@ function drawCameraScreen() {
         textSize(30);
         text("Sending Soundwave..", 25, 200);
         soundWaveInterval -= 5;
-        print(soundWaveInterval);
     }
     if (soundWaveInterval == 0 && soundWaveSending == true) {
         soundWaveSending = false;
@@ -1564,7 +1648,6 @@ function drawCameraScreen() {
         textSize(30);
         text("Sending Soundwave..", 25, 200);
         soundWaveInterval -= 5;
-        print(soundWaveInterval);
     }
     if (soundWaveInterval == 0 && soundWaveSending == true) {
         soundWaveSending = false;
@@ -1604,7 +1687,6 @@ function drawCameraScreen() {
         textSize(30);
         text("Sending Soundwave..", 25, 200);
         soundWaveInterval -= 5;
-        print(soundWaveInterval);
     }
     if (soundWaveInterval == 0 && soundWaveSending == true) {
         soundWaveSending = false;
@@ -2305,13 +2387,11 @@ function foxyLogic() {
     if (foxyRunning == true) {
         foxyCamPosition = 2
         foxyRunDistance -= 5
-        print(foxyRunDistance);
     }
 
     if (foxyRunning == false) {
         foxyCamPosition = 1.3
         foxyRunDistance -= 5
-        print(foxyRunDistance);
     }
 
     if (foxyRunDistance == 5 && leftDoorClosed == false) {
