@@ -109,10 +109,10 @@ let bonnieScareTime = 0;
 let staticLineX = 300;
 let staticLineY = 175;
 let gameBegan = false;
+let creditsScreenSelected = false;
 let fadeInEffectWaitTime = 0;
 let fadeInEffectTransparency = 255;
 let textFadeInEffectTransparency = 255;
-let staticParticles = []
 
 // Start of Game Variables
 let phoneGuyRinging = false;
@@ -299,7 +299,7 @@ function draw() {
     drawMainMenu();
     // gameStarted();
 
-    // mouseDebug();
+    mouseDebug();
 
 }
 
@@ -311,7 +311,7 @@ function draw() {
 
 function drawMainMenu() {
 
-    if (gameBegan == false) {
+    if (gameBegan == false && creditsScreenSelected == false) {
 
         // Blocky (Freddy)
         freddyX = 0;
@@ -345,15 +345,14 @@ function drawMainMenu() {
         text('at', 50, 150);
         text("Blocky's", 50, 200);
         text("New Game", 50, 300);
-        textSize(15);
-        text("(you don't have a choice)", 65, 320);
+        text("Credits/Extras", 50, 360);
     }
 
     if (gameBegan == false && !MenuTheme.isPlaying()) {
         MenuTheme.play();
     }
 
-    if (gameBegan && MenuTheme.isPlaying()) {
+    if (gameBegan == true || creditsScreenSelected == true && MenuTheme.isPlaying()) {
         MenuTheme.stop();
     }
 
@@ -381,13 +380,10 @@ function drawMainMenu() {
         bonnieScareTime = 0;
 
         // Menu Variables
-        staticLineX = 300;
-        staticLineY = 175;
         gameBegan = false;
         fadeInEffectWaitTime = 0;
         fadeInEffectTransparency = 255;
         textFadeInEffectTransparency = 255;
-        staticParticles = []
 
         // Start of Game Variables
         phoneGuyRinging = false;
@@ -859,6 +855,7 @@ function gameStarted() {
     foxyLogic();
     goldenFreddyLogic();
     bonnieLogic();
+
 }
 
 function mouseDebug() {
@@ -1886,6 +1883,10 @@ function mouseClicked() {
         monitorSwitchSound.play();
     }
 
+    if (mouseX >= 50 && mouseX <= 300 && mouseY >= 330 && mouseY <= 360) {
+        creditsScreenSelected = true;
+    }
+
 
 
 
@@ -2837,35 +2838,6 @@ function drawChica() {
     rect(380 * chicaSize, 330 * chicaSize, 30 * chicaSize, 40 * chicaSize);
     rect(520 * chicaSize, 330 * chicaSize, 30 * chicaSize, 40 * chicaSize);
     rect(450 * chicaSize, 390 * chicaSize, 170 * chicaSize, 80 * chicaSize);
-    for (let i = 0; i < 30; i += 1) { // Chica Confetti Apron Loop
-        fill(random(chicaConfettiColor));
-        ellipse(
-            random(520, 370) * chicaSize,
-            random(360, 420) * chicaSize,
-            10 * chicaSize,
-            10 * chicaSize
-        )
-    }
-
-    for (let i = 0; i < 10; i += 1) { // Chica Confetti Apron Loop 2
-        fill(random(chicaConfettiColor));
-        ellipse(
-            random(510, 530) * chicaSize,
-            random(320, 380) * chicaSize,
-            10 * chicaSize,
-            10 * chicaSize
-        )
-    }
-
-    for (let i = 0; i < 10; i += 1) { // Chica Confetti Apron Loop 2
-        fill(random(chicaConfettiColor));
-        ellipse(
-            random(370, 390) * chicaSize,
-            random(320, 380) * chicaSize,
-            10 * chicaSize,
-            10 * chicaSize
-        )
-    }
     stroke(52, 0, 130);
     strokeWeight(7 * chicaSize);
     fill(252, 251, 30);
