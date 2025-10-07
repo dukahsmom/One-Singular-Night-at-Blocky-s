@@ -99,6 +99,7 @@ let monitorOpen;
 let monitorStreaming;
 let fnafCutScream;
 let monitorSwitchSound;
+let creditsMusic
 
 // Funny Event Variables
 let bonnieScare = false;
@@ -113,6 +114,9 @@ let creditsScreenSelected = false;
 let fadeInEffectWaitTime = 0;
 let fadeInEffectTransparency = 255;
 let textFadeInEffectTransparency = 255;
+let creditFlashTransparency = 255;
+let creditFlashDelay = 200;
+let creditScreen = 1;
 
 // Start of Game Variables
 let phoneGuyRinging = false;
@@ -263,24 +267,25 @@ function preload() {
     FanBlades = loadImage("img/Fan Spinning.gif");
     camMapReference = loadImage("img/CameraMap.jpg");
     bonnieAngry = loadImage("img/Bonnie Angry.jpg")
-    plushieNoseSound = loadSound("mp3/FNAF_Nose.mp3");
-    FNAFDoorClose = loadSound("mp3/FNAF Door Close.mp3");
-    FNAFLightFlick = loadSound("mp3/LightSound.mp3");
-    OfficeAmbience = loadSound("mp3/Office Ambience.mp3");
-    MenuTheme = loadSound("mp3/MenuTheme.mp3");
-    phoneGuyRingSound = loadSound("mp3/Phone Ringing.mp3");
-    phoneGuyPickupSound = loadSound("mp3/Phone Pickup Sound.mp3")
-    phone1 = loadSound("mp3/Phone1.mp3");
-    phone2 = loadSound("mp3/Phone2.mp3");
-    phone3 = loadSound("mp3/Phone3.mp3");
-    phone4 = loadSound("mp3/Phone4.mp3");
-    phone5 = loadSound("mp3/Phone5.mp3");
-    phone6 = loadSound("mp3/Phone6.mp3");
-    phone7 = loadSound("mp3/Phone7.mp3");
-    monitorOpen = loadSound("mp3/FNAF Monitor Sound.mp3")
-    monitorStreaming = loadSound("mp3/FNAF Monitor Static.mp3")
-    fnafCutScream = loadSound("mp3/FNAF Cut Scream.mp3")
-    monitorSwitchSound = loadSound("mp3/Camera Switch Sound.mp3")
+    plushieNoseSound = loadSound("audio/FNAF_Nose.mp3");
+    FNAFDoorClose = loadSound("audio/FNAF Door Close.mp3");
+    FNAFLightFlick = loadSound("audio/LightSound.mp3");
+    OfficeAmbience = loadSound("audio/Office Ambience.mp3");
+    MenuTheme = loadSound("audio/MenuTheme.mp3");
+    phoneGuyRingSound = loadSound("audio/Phone Ringing.mp3");
+    phoneGuyPickupSound = loadSound("audio/Phone Pickup Sound.mp3")
+    phone1 = loadSound("audio/Phone1.mp3");
+    phone2 = loadSound("audio/Phone2.mp3");
+    phone3 = loadSound("audio/Phone3.mp3");
+    phone4 = loadSound("audio/Phone4.mp3");
+    phone5 = loadSound("audio/Phone5.mp3");
+    phone6 = loadSound("audio/Phone6.mp3");
+    phone7 = loadSound("audio/Phone7.mp3");
+    monitorOpen = loadSound("audio/FNAF Monitor Sound.mp3");
+    monitorStreaming = loadSound("audio/FNAF Monitor Static.mp3");
+    fnafCutScream = loadSound("audio/FNAF Cut Scream.mp3");
+    monitorSwitchSound = loadSound("audio/Camera Switch Sound.mp3");
+    creditsMusic = loadSound("audio/CreditsMusic.m4a");
 }
 
 
@@ -298,8 +303,23 @@ function draw() {
 
     drawMainMenu();
     // gameStarted();
+    // drawCreditsScreen();
 
     mouseDebug();
+    if (creditsScreenSelected == true) {
+        if (creditFlashDelay > 0) {
+            creditFlashDelay -= 5.5;
+        }
+        if (creditFlashDelay <= 0) {
+            fill(255, creditFlashTransparency);
+            rect(300, 200, 1000, 1000);
+            creditFlashTransparency -= 5;
+        }
+        if (!creditsMusic.isPlaying()) {
+            creditsMusic.setVolume(0.05);
+            creditsMusic.play();
+        }
+    }
 
 }
 
@@ -545,6 +565,102 @@ function drawMainMenu() {
         monitorOpen.stop();
         monitorStreaming.stop();
     }
+
+}
+
+function drawCreditsScreen() {
+    if (creditScreen == 1) {
+        push();
+        fill(100);
+        rect(100, 100, 170, 40);
+        textSize(20);
+        fill('white');
+        text("About this game", 28, 107);
+        textSize(10);
+        text("This entire game was a solo project", 15, 140);
+        text("made by me for computer scienece.", 15, 150);
+        text("A partial part of this game has been", 15, 160);
+        text("presented by me to an entire class,", 15, 170);
+        text("classmates loved to try playing the game", 15, 180);
+        text("even while it was still unfinished.", 15, 190);
+        text("This project has went on to be the", 15, 200);
+        text("undoubted best project of the 2025", 15, 210);
+        text("Computer Science projects. More on it", 15, 220);
+        text("further down the credits and other than", 15, 230);
+        text("that, I've worked about a total time", 15, 240);
+        text("of over 24+ hours, I'd even beg to say 48", 15, 250);
+        text("I eventually got burnout near presentation day.", 15, 260);
+        text("As the making of the message (10/6/2025)", 15, 270);
+        text("I've promised to finish the game for my", 15, 280);
+        text("lovely community, even though it's small,", 15, 290);
+        text("they still impact the game, which is something", 15, 300);
+        text("I truly find beatiful.", 15, 310);
+        pop();
+
+        push();
+        translate(380, 0);
+        fill(100);
+        rect(100, 100, 170, 40);
+        textSize(20);
+        fill('white');
+        text("The Community", 28, 107);
+        textSize(10);
+        text("These people are the reason this game", 15, 140);
+        text("was even continued until finish, thank you", 15, 150);
+        text("guys and girls. For motivating me to finish", 15, 160);
+        text("this project, the project would probably", 15, 170);
+        text("have been untouched without you.", 15, 180);
+        text("But since you guys gave me the motivation,", 15, 190);
+        text("you're going to get the complete version!", 15, 200);
+        text("I can't emphasize how much I want to thank", 15, 210);
+        text("you for supporting this game, it really means", 15, 220);
+        text("a lot to me. I truly love the support, it brings a ", 15, 230);
+        text("man pretty far, I'll tell you that.", 15, 240);
+        pop();
+
+        // Next and Back Buttons
+        fill(100, 100);
+        rect(80, 350, 150, 50);
+        textSize(35);
+        fill('white');
+        text("Back", 45, 360);
+        fill(100, 100);
+        rect(520, 350, 150, 50);
+        fill('white');
+        text("Next", 485, 360);
+    }
+
+    if (creditScreen == 2) {
+        push();
+        fill(100);
+        rect(100, 100, 170, 40);
+        textSize(20);
+        fill('white');
+        text("Awards", 65, 107);
+        textSize(10);
+        text("One Singular Night at Blocky's is the", 15, 140);
+        text("best project by far of the freshman class", 15, 150);
+        text("of 2025 and one of the best Computer Science", 15, 160);
+        text("teacher Mr. Crockett has ever seen, he is the", 15, 170);
+        text("only Computer Science teacher in the school.", 15, 180);
+        text("He can vouch for this as he stated on the grading paper", 15, 190);
+        text("as he stated below.", 15, 200);
+        pop();
+    }
+
+    // Next and Back Buttons
+    fill(100, 100);
+    rect(80, 350, 150, 50);
+    textSize(35);
+    fill('white');
+    text("Back", 45, 360);
+    fill(100, 100);
+    rect(520, 350, 150, 50);
+    fill('white');
+    text("Next", 485, 360);
+
+    // Page Number
+    text(creditScreen, 300, 370);
 }
 
 
@@ -1885,6 +2001,28 @@ function mouseClicked() {
 
     if (mouseX >= 50 && mouseX <= 300 && mouseY >= 330 && mouseY <= 360) {
         creditsScreenSelected = true;
+        drawCreditsScreen();
+    }
+
+    if (mouseX >= 5 && mouseX <= 155 && mouseY >= 325 && mouseY <= 375) {
+        // print("Back");
+        // 1 is excluded to prevent negatives
+        if (creditScreen == 2) {
+            creditScreen -= 1;
+        }
+        if (creditScreen == 3) {
+            creditScreen -= 1;
+        }
+    }
+
+    if (mouseX >= 455 && mouseX <= 595 && mouseY >= 325 && mouseY <= 375) {
+        // print("Next");
+        if (creditScreen == 2) {
+            creditScreen += 1;
+        }
+        if (creditScreen == 1) {
+            creditScreen += 1;
+        }
     }
 
 
