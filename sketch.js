@@ -306,6 +306,7 @@ function draw() {
     // drawCreditsScreen();
 
     mouseDebug();
+    drawCreditsScreen();
     if (creditsScreenSelected == true) {
         if (creditFlashDelay > 0) {
             creditFlashDelay -= 5.5;
@@ -313,13 +314,17 @@ function draw() {
         if (creditFlashDelay <= 0) {
             fill(255, creditFlashTransparency);
             rect(300, 200, 1000, 1000);
-            creditFlashTransparency -= 5;
+
+            if (creditFlashTransparency > 0) {
+                creditFlashTransparency -= 5;
+            }
         }
         if (!creditsMusic.isPlaying()) {
             creditsMusic.setVolume(0.05);
             creditsMusic.play();
         }
     }
+
 
 }
 
@@ -376,7 +381,7 @@ function drawMainMenu() {
         MenuTheme.stop();
     }
 
-    else if (gameBegan == true) {
+    else if (gameBegan == true && creditsScreenSelected == false) {
         fadeInEffectWaitTime += 2.5
         if (fadeInEffectWaitTime >= 100) {
             gameStarted();
@@ -569,54 +574,85 @@ function drawMainMenu() {
 }
 
 function drawCreditsScreen() {
-    if (creditScreen == 1) {
-        push();
-        fill(100);
-        rect(100, 100, 170, 40);
-        textSize(20);
-        fill('white');
-        text("About this game", 28, 107);
-        textSize(10);
-        text("This entire game was a solo project", 15, 140);
-        text("made by me for computer scienece.", 15, 150);
-        text("A partial part of this game has been", 15, 160);
-        text("presented by me to an entire class,", 15, 170);
-        text("classmates loved to try playing the game", 15, 180);
-        text("even while it was still unfinished.", 15, 190);
-        text("This project has went on to be the", 15, 200);
-        text("undoubted best project of the 2025", 15, 210);
-        text("Computer Science projects. More on it", 15, 220);
-        text("further down the credits and other than", 15, 230);
-        text("that, I've worked about a total time", 15, 240);
-        text("of over 24+ hours, I'd even beg to say 48", 15, 250);
-        text("I eventually got burnout near presentation day.", 15, 260);
-        text("As the making of the message (10/6/2025)", 15, 270);
-        text("I've promised to finish the game for my", 15, 280);
-        text("lovely community, even though it's small,", 15, 290);
-        text("they still impact the game, which is something", 15, 300);
-        text("I truly find beatiful.", 15, 310);
-        pop();
+    if (creditFlashDelay <= 0) {
+        if (creditScreen == 1) {
+            push();
+            fill(100);
+            rect(100, 100, 170, 40);
+            textSize(20);
+            fill('white');
+            text("About this game", 28, 107);
+            textSize(10);
+            text("This entire game was a solo project", 15, 140);
+            text("made by me for computer scienece.", 15, 150);
+            text("A partial part of this game has been", 15, 160);
+            text("presented by me to an entire class,", 15, 170);
+            text("classmates loved to try playing the game", 15, 180);
+            text("even while it was still unfinished.", 15, 190);
+            text("This project has went on to be the", 15, 200);
+            text("undoubted best project of the 2025", 15, 210);
+            text("Computer Science projects. More on it", 15, 220);
+            text("further down the credits and other than", 15, 230);
+            text("that, I've worked about a total time", 15, 240);
+            text("of over 24+ hours, I'd even beg to say 48", 15, 250);
+            text("I eventually got burnout near presentation day.", 15, 260);
+            text("As the making of the message (10/6/2025)", 15, 270);
+            text("I've promised to finish the game for my", 15, 280);
+            text("lovely community, even though it's small,", 15, 290);
+            text("they still impact the game, which is something", 15, 300);
+            text("I truly find beatiful.", 15, 310);
+            pop();
 
-        push();
-        translate(380, 0);
-        fill(100);
-        rect(100, 100, 170, 40);
-        textSize(20);
-        fill('white');
-        text("The Community", 28, 107);
-        textSize(10);
-        text("These people are the reason this game", 15, 140);
-        text("was even continued until finish, thank you", 15, 150);
-        text("guys and girls. For motivating me to finish", 15, 160);
-        text("this project, the project would probably", 15, 170);
-        text("have been untouched without you.", 15, 180);
-        text("But since you guys gave me the motivation,", 15, 190);
-        text("you're going to get the complete version!", 15, 200);
-        text("I can't emphasize how much I want to thank", 15, 210);
-        text("you for supporting this game, it really means", 15, 220);
-        text("a lot to me. I truly love the support, it brings a ", 15, 230);
-        text("man pretty far, I'll tell you that.", 15, 240);
-        pop();
+            push();
+            translate(380, 0);
+            fill(100);
+            rect(100, 100, 170, 40);
+            textSize(20);
+            fill('white');
+            text("The Community", 28, 107);
+            textSize(10);
+            text("These people are the reason this game", 15, 140);
+            text("was even continued until finish, thank you", 15, 150);
+            text("guys and girls. For motivating me to finish", 15, 160);
+            text("this project, the project would probably", 15, 170);
+            text("have been untouched without you.", 15, 180);
+            text("But since you guys gave me the motivation,", 15, 190);
+            text("you're going to get the complete version!", 15, 200);
+            text("I can't emphasize how much I want to thank", 15, 210);
+            text("you for supporting this game, it really means", 15, 220);
+            text("a lot to me. I truly love the support, it brings a ", 15, 230);
+            text("man pretty far, I'll tell you that.", 15, 240);
+            pop();
+
+            // Next and Back Buttons
+            fill(100, 100);
+            rect(80, 350, 150, 50);
+            textSize(35);
+            fill('white');
+            text("Back", 45, 360);
+            fill(100, 100);
+            rect(520, 350, 150, 50);
+            fill('white');
+            text("Next", 485, 360);
+        }
+
+        if (creditScreen == 2) {
+            push();
+            fill(100);
+            rect(100, 100, 170, 40);
+            textSize(20);
+            fill('white');
+            text("Awards", 65, 107);
+            textSize(10);
+            text("One Singular Night at Blocky's is the", 15, 140);
+            text("best project by far of the freshman class", 15, 150);
+            text("of 2025 and one of the best Computer Science", 15, 160);
+            text("teacher Mr. Crockett has ever seen, he is the", 15, 170);
+            text("only Computer Science teacher in the school.", 15, 180);
+            text("He can vouch for this as he stated on the grading paper", 15, 190);
+            text("as he stated below.", 15, 200);
+            pop();
+        }
 
         // Next and Back Buttons
         fill(100, 100);
@@ -628,39 +664,24 @@ function drawCreditsScreen() {
         rect(520, 350, 150, 50);
         fill('white');
         text("Next", 485, 360);
-    }
 
-    if (creditScreen == 2) {
-        push();
-        fill(100);
-        rect(100, 100, 170, 40);
-        textSize(20);
+        // Page Number
+        text(creditScreen, 300, 370);
+
+        // Next and Back Buttons
+        fill(100, 100);
+        rect(80, 350, 150, 50);
+        textSize(35);
         fill('white');
-        text("Awards", 65, 107);
-        textSize(10);
-        text("One Singular Night at Blocky's is the", 15, 140);
-        text("best project by far of the freshman class", 15, 150);
-        text("of 2025 and one of the best Computer Science", 15, 160);
-        text("teacher Mr. Crockett has ever seen, he is the", 15, 170);
-        text("only Computer Science teacher in the school.", 15, 180);
-        text("He can vouch for this as he stated on the grading paper", 15, 190);
-        text("as he stated below.", 15, 200);
-        pop();
+        text("Back", 45, 360);
+        fill(100, 100);
+        rect(520, 350, 150, 50);
+        fill('white');
+        text("Next", 485, 360);
+
+        // Page Number
+        text(creditScreen, 300, 370);
     }
-
-    // Next and Back Buttons
-    fill(100, 100);
-    rect(80, 350, 150, 50);
-    textSize(35);
-    fill('white');
-    text("Back", 45, 360);
-    fill(100, 100);
-    rect(520, 350, 150, 50);
-    fill('white');
-    text("Next", 485, 360);
-
-    // Page Number
-    text(creditScreen, 300, 370);
 }
 
 
@@ -2001,8 +2022,9 @@ function mouseClicked() {
 
     if (mouseX >= 50 && mouseX <= 300 && mouseY >= 330 && mouseY <= 360) {
         creditsScreenSelected = true;
-        drawCreditsScreen();
     }
+
+    // Credit Screen BUtton Detection
 
     if (mouseX >= 5 && mouseX <= 155 && mouseY >= 325 && mouseY <= 375) {
         // print("Back");
