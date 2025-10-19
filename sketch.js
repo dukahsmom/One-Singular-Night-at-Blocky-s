@@ -99,7 +99,8 @@ let monitorOpen;
 let monitorStreaming;
 let fnafCutScream;
 let monitorSwitchSound;
-let creditsMusic
+let creditsMusic;
+let winSound;
 
 // Funny Event Variables
 let bonnieScare = false;
@@ -114,9 +115,17 @@ let creditsScreenSelected = false;
 let fadeInEffectWaitTime = 0;
 let fadeInEffectTransparency = 255;
 let textFadeInEffectTransparency = 255;
+
+// Credits Screen Variables
 let creditFlashTransparency = 255;
-let creditFlashDelay = 200;
+let creditFlashDelay = 950;
 let creditScreen = 1;
+let creditScreenTextOneDelay = 400;
+let creditScreenTextOneFadeInTime = 0;
+let creditScreenTextTwoDelay = 750;
+let creditScreenTextTwoFadeInTime = 0;
+let backButtonCondition = 1;
+let creditsIntroDelay = 467.5;
 
 // Start of Game Variables
 let phoneGuyRinging = false;
@@ -130,6 +139,12 @@ let phoneGuySoundPlayed = 0;
 
 // Time Variables
 let time = 12;
+let timeInterval = 1;
+let timeStage = 1;
+let gameWon = false;
+let winTextFadeInTime = 0;
+let winNumberX = 280;
+let winNumberY = 200;
 
 // Power Variables
 let powerConsumptionLevel = 1;
@@ -140,7 +155,7 @@ let tabletX = 300;
 let tabletY = 600; // Change to 600 when done
 let tabletOpened = false;
 let tabletAvailable = true;
-let screenCasting = true;
+let screenCasting = false;
 let CameraMapSize = 0.55;
 let cameraOpenSoundOnCooldown = false;
 let cameraStreamSoundOnCooldown = false;
@@ -285,7 +300,9 @@ function preload() {
     monitorStreaming = loadSound("audio/FNAF Monitor Static.mp3");
     fnafCutScream = loadSound("audio/FNAF Cut Scream.mp3");
     monitorSwitchSound = loadSound("audio/Camera Switch Sound.mp3");
-    creditsMusic = loadSound("audio/CreditsMusic.m4a");
+    creditsIntro = loadSound("audio/CreditsIntro.mp3");
+    creditsMusic = loadSound("audio/CreditsMusic.mp3");
+    winSound = loadSound("audio/WinSound.mp3");
 }
 
 
@@ -303,27 +320,9 @@ function draw() {
 
     drawMainMenu();
     // gameStarted();
-    // drawCreditsScreen();
-
-    mouseDebug();
     drawCreditsScreen();
-    if (creditsScreenSelected == true) {
-        if (creditFlashDelay > 0) {
-            creditFlashDelay -= 5.5;
-        }
-        if (creditFlashDelay <= 0) {
-            fill(255, creditFlashTransparency);
-            rect(300, 200, 1000, 1000);
 
-            if (creditFlashTransparency > 0) {
-                creditFlashTransparency -= 5;
-            }
-        }
-        if (!creditsMusic.isPlaying()) {
-            creditsMusic.setVolume(0.05);
-            creditsMusic.play();
-        }
-    }
+    // mouseDebug();
 
 
 }
@@ -374,15 +373,17 @@ function drawMainMenu() {
     }
 
     if (gameBegan == false && !MenuTheme.isPlaying()) {
-        MenuTheme.play();
+        MenuTheme.loop();
     }
 
     if (gameBegan == true || creditsScreenSelected == true && MenuTheme.isPlaying()) {
         MenuTheme.stop();
     }
 
-    else if (gameBegan == true && creditsScreenSelected == false) {
-        fadeInEffectWaitTime += 2.5
+    if (gameBegan == true) {
+        if (fadeInEffectWaitTime < 100) {
+            fadeInEffectWaitTime += 2.5;
+        }
         if (fadeInEffectWaitTime >= 100) {
             gameStarted();
             fill(0, textFadeInEffectTransparency);
@@ -432,7 +433,7 @@ function drawMainMenu() {
         tabletY = 600; // Change to 600 when done
         tabletOpened = false;
         tabletAvailable = true;
-        screenCasting = true;
+        screenCasting = false;
         CameraMapSize = 0.55;
         cameraOpenSoundOnCooldown = false;
         cameraStreamSoundOnCooldown = false;
@@ -574,7 +575,9 @@ function drawMainMenu() {
 }
 
 function drawCreditsScreen() {
-    if (creditFlashDelay <= 0) {
+
+
+    if (creditFlashDelay <= 0 && creditsScreenSelected == true) {
         if (creditScreen == 1) {
             push();
             fill(100);
@@ -624,16 +627,6 @@ function drawCreditsScreen() {
             text("man pretty far, I'll tell you that.", 15, 240);
             pop();
 
-            // Next and Back Buttons
-            fill(100, 100);
-            rect(80, 350, 150, 50);
-            textSize(35);
-            fill('white');
-            text("Back", 45, 360);
-            fill(100, 100);
-            rect(520, 350, 150, 50);
-            fill('white');
-            text("Next", 485, 360);
         }
 
         if (creditScreen == 2) {
@@ -649,17 +642,24 @@ function drawCreditsScreen() {
             text("of 2025 and one of the best Computer Science", 15, 160);
             text("teacher Mr. Crockett has ever seen, he is the", 15, 170);
             text("only Computer Science teacher in the school.", 15, 180);
-            text("He can vouch for this as he stated on the grading paper", 15, 190);
-            text("as he stated below.", 15, 200);
+            text("He can vouch for this as he stated it on the grading paper", 15, 190);
             pop();
         }
 
         // Next and Back Buttons
-        fill(100, 100);
-        rect(80, 350, 150, 50);
         textSize(35);
-        fill('white');
-        text("Back", 45, 360);
+        if (backButtonCondition == 1) {
+            fill(100, 100);
+            rect(80, 350, 150, 50);
+            fill('white');
+            text("Menu", 40, 360);
+        }
+        if (backButtonCondition == 2) {
+            fill(100, 100);
+            rect(80, 350, 150, 50);
+            fill('white');
+            text("Back", 40, 360);
+        }
         fill(100, 100);
         rect(520, 350, 150, 50);
         fill('white');
@@ -667,20 +667,67 @@ function drawCreditsScreen() {
 
         // Page Number
         text(creditScreen, 300, 370);
+    }
 
-        // Next and Back Buttons
-        fill(100, 100);
-        rect(80, 350, 150, 50);
-        textSize(35);
-        fill('white');
-        text("Back", 45, 360);
-        fill(100, 100);
-        rect(520, 350, 150, 50);
-        fill('white');
-        text("Next", 485, 360);
+    if (creditsScreenSelected == true) {
+        if (creditScreenTextOneDelay > 0) {
+            creditScreenTextOneDelay -= 5;
+        }
 
-        // Page Number
-        text(creditScreen, 300, 370);
+        if (creditScreenTextTwoDelay > 0) {
+            creditScreenTextTwoDelay -= 5;
+        }
+
+        if (creditScreenTextOneDelay <= 0 && creditFlashDelay > 0) {
+            if (creditScreenTextOneFadeInTime < 255) {
+                creditScreenTextOneFadeInTime += 5;
+            }
+            textSize(30);
+            fill(255, creditScreenTextOneFadeInTime);
+            text("Thank you for Clicking!", 140, 150);
+
+
+        }
+
+        if (creditScreenTextTwoDelay <= 0 && creditFlashDelay > 0) {
+
+            if (creditScreenTextTwoFadeInTime < 260) {
+                creditScreenTextTwoFadeInTime += 10;
+            }
+            textSize(30);
+            fill(255, creditScreenTextTwoFadeInTime);
+            text("Enjoy :D", 250, 250);
+        }
+
+        if (creditFlashDelay > 0) {
+            creditFlashDelay -= 5;
+        }
+        if (creditFlashDelay <= 0) {
+            fill(255, creditFlashTransparency);
+            rect(300, 200, 1000, 1000);
+            creditFlashTransparency -= 5;
+        }
+    }
+
+    if (creditsScreenSelected == true && !creditsIntro.isPlaying()) {
+        creditsIntro.setVolume(0.1);
+        creditsIntro.play();
+    }
+
+    if (creditsScreenSelected == true && creditsIntroDelay > 0) {
+        creditsIntroDelay -= 2.5;
+    }
+
+    if (creditsIntroDelay <= 0) {
+        creditsIntro.stop();
+        if (!creditsMusic.isPlaying()) {
+            creditsMusic.setVolume(0.1);
+            creditsMusic.loop();
+        }
+    }
+
+    if (creditsScreenSelected == false && creditsMusic.isPlaying()) {
+        creditsMusic.stop();
     }
 }
 
@@ -992,6 +1039,8 @@ function gameStarted() {
     foxyLogic();
     goldenFreddyLogic();
     bonnieLogic();
+    drawUI();
+    drawWinScreen();
 
 }
 
@@ -1861,7 +1910,7 @@ function mouseClicked() {
 
     // New Game Detection
 
-    if (mouseX >= 45 && mouseX <= 250 && mouseY >= 265 && mouseY <= 300) {
+    if (mouseX >= 45 && mouseX <= 250 && mouseY >= 265 && mouseY <= 300 && gameBegan == false && creditsScreenSelected == false) {
         gameBegan = true;
     }
 
@@ -2020,30 +2069,37 @@ function mouseClicked() {
         monitorSwitchSound.play();
     }
 
-    if (mouseX >= 50 && mouseX <= 300 && mouseY >= 330 && mouseY <= 360) {
+    if (mouseX >= 50 && mouseX <= 300 && mouseY >= 330 && mouseY <= 360 && creditsScreenSelected == false && gameBegan == false) {
         creditsScreenSelected = true;
     }
 
-    // Credit Screen BUtton Detection
-
-    if (mouseX >= 5 && mouseX <= 155 && mouseY >= 325 && mouseY <= 375) {
+    if (mouseX >= 5 && mouseX <= 155 && mouseY >= 325 && mouseY <= 375 && creditFlashTransparency <= 0) {
         // print("Back");
         // 1 is excluded to prevent negatives
+        if (creditScreen == 1 && creditFlashTransparency <= 0) {
+            creditsScreenSelected = false;
+            creditFlashTransparency = 255;
+            creditFlashDelay = 950;
+            creditScreen = 1;
+            creditScreenTextOneDelay = 400;
+            creditScreenTextOneFadeInTime = 0;
+            creditScreenTextTwoDelay = 750;
+            creditScreenTextTwoFadeInTime = 0;
+            creditsMusicStarted = false;
+            creditsIntroDelay = 467.5;
+        }
+
         if (creditScreen == 2) {
             creditScreen -= 1;
-        }
-        if (creditScreen == 3) {
-            creditScreen -= 1;
+            backButtonCondition = 1;
         }
     }
 
-    if (mouseX >= 455 && mouseX <= 595 && mouseY >= 325 && mouseY <= 375) {
+    if (mouseX >= 455 && mouseX <= 595 && mouseY >= 325 && mouseY <= 375 && creditFlashTransparency <= 0) {
         // print("Next");
-        if (creditScreen == 2) {
-            creditScreen += 1;
-        }
         if (creditScreen == 1) {
             creditScreen += 1;
+            backButtonCondition = 2;
         }
     }
 
@@ -2429,6 +2485,7 @@ function drawPhoneGuyDialogueUI() {
                 if (phoneGuyDialogueStage == 8) {
                     phone7.stop();
                     phoneGuySoundPlayed = 0;
+                    phoneGuyHungUpOn = true;
                 }
             }
         }
@@ -2455,6 +2512,10 @@ function keyPressed() {
 
     if (key === 'k') {
         bonnieReady = true;
+    }
+
+    if (key === '+') {
+        gameWon = true;
     }
 }
 
@@ -2647,6 +2708,109 @@ function bonnieLogic() {
         print("*Bonnie Jumpscare");
         bonnieCamPosition = 1;
         bonnieInOffice = false;
+    }
+}
+
+function drawUI() {
+    if (phoneGuyHungUpOn == true) {
+        textSize(20);
+        stroke('black');
+        fill('white');
+        text("Time:", 10, 20);
+        text(time, 65, 20);
+
+        if (timeStage == 1) {
+            time = 12
+            if (timeInterval > 0) {
+                timeInterval -= 1 / 2700.0;
+                print(timeInterval);
+            }
+
+            if (timeInterval <= 0) {
+                timeInterval = 1;
+                timeStage = 2;
+            }
+        }
+        else if (timeStage == 2) {
+            time = 1
+            if (timeInterval > 0) {
+                timeInterval -= 1 / 2700.0;
+                print(timeInterval);
+            }
+
+            if (timeInterval <= 0) {
+                timeInterval = 1;
+                timeStage = 2;
+            }
+        }
+        else if (timeStage == 3) {
+            time = 2
+            if (timeInterval > 0) {
+                timeInterval -= 1 / 2700.0;
+                print(timeInterval);
+            }
+
+            if (timeInterval <= 0) {
+                timeInterval = 1;
+                timeStage = 2;
+            }
+        }
+        else if (timeStage == 4) {
+            time = 3
+            if (timeInterval > 0) {
+                timeInterval -= 1 / 2700.0;
+                print(timeInterval);
+            }
+
+            if (timeInterval <= 0) {
+                timeInterval = 1;
+                timeStage = 2;
+            }
+        }
+        else if (timeStage == 5) {
+            time = 4
+            if (timeInterval > 0) {
+                timeInterval -= 1 / 2700.0;
+                print(timeInterval);
+            }
+
+            if (timeInterval <= 0) {
+                timeInterval = 1;
+                timeStage = 2;
+            }
+        }
+        else if (timeStage == 6) {
+            time = 5
+            if (timeInterval > 0) {
+                timeInterval -= 1 / 2700.0;
+                print(timeInterval);
+            }
+
+            if (timeInterval <= 0) {
+                timeInterval = 1;
+                timeStage = 2;
+            }
+        }
+        else if (timeStage == 7) {
+            time = 6
+            gameWon = true;
+            print(gameWon);
+        }
+    }
+}
+
+function drawWinScreen() {
+    if (gameWon == true) {
+        OfficeAmbience.stop();
+        if (!winSound.isPlaying()) {
+            winSound.setVolume(0.15);
+            winSound.play();
+        }
+        fill('black');
+        noStroke();
+        rect(300, 200, 1000, 1000);
+        fill(50);
+        rect(280, 200, 60, 100);
     }
 }
 
